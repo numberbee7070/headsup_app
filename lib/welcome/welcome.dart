@@ -41,6 +41,5 @@ class IntroScreen extends StatelessWidget {
           activeShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25.0))),
     );
-    ;
   }
 }
