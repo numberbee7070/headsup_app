@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         body: Stack(
           children: [
-            // HamburgerMenu(),
+            HamburgerMenu(),
             Container(
               child: Center(
                 child: Text("This is the home page"),
