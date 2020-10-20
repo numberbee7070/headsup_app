@@ -1,44 +1,14 @@
 import 'dart:async';
 
+import 'package:app/auth/services/service.dart';
 import 'package:chopper/chopper.dart';
-import '../constants.dart';
 
 part 'post_service.chopper.dart';
 
 @ChopperApi()
-abstract class LoginService extends ChopperService {
-  @Post(path: "signup/")
-  Future<Response<Map<String, dynamic>>> newSignUp(
-      @Body() Map<String, String> data);
-
-  @Post(path: "api/token/")
-  Future<Response<Map<String, dynamic>>> fetchToken(
-      @Body() Map<String, String> data);
-
-  @Post(path: "api/token/refresh")
-  Future<Response<Map<String, dynamic>>> refreshToken(
-      @Body() Map<String, String> data);
-
-  static LoginService create() {
-    final client = ChopperClient(
-      baseUrl: "https://kyukey.tech/headsup",
-      services: [
-        _$LoginService(),
-      ],
-      interceptors: [
-        HttpLoggingInterceptor(),
-        HttpErrorInterceptor(),
-      ],
-      converter: JsonConverter(),
-    );
-    return _$LoginService(client);
-  }
-}
-
-@ChopperApi()
 abstract class PostApiService extends ChopperService {
-  @Post(path: "hello/")
-  Future<Response> checkAccess();
+  @Get(path: "feed/")
+  Future<Response> getFeed();
 
   static PostApiService create() {
     final client = ChopperClient(
@@ -74,8 +44,8 @@ class HttpException implements Exception {
 
 class AuthHeaderInterceptor extends RequestInterceptor {
   @override
-  FutureOr<Request> onRequest(Request request) {
-    final String token = Constants.accessToken;
-    return request.copyWith(headers: {"Authorization": "Bearer $token"});
+  FutureOr<Request> onRequest(Request request) async {
+    final String token = await AuthServices.accessToken;
+    return request.copyWith(headers: {"Authorization": "$token"});
   }
 }

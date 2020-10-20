@@ -1,12 +1,15 @@
-import 'package:app/pages/home.dart';
-import 'package:app/constants.dart';
+import 'package:app/auth/phone_auth.dart';
+import 'package:country_code_picker/country_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
-import 'welcome/welcome.dart' as welcome;
 import 'auth/auth.dart' as auth;
-import 'package:app/auth/oauth.dart' as oauth;
+import 'auth/services/service.dart';
 import 'model/model.dart';
+import 'pages/home.dart';
+import 'welcome/welcome.dart' as welcome;
+import 'constants.dart';
 
 void main() {
   _setupLogging();
@@ -34,25 +37,45 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Model.create(),
+      future: () async {
+        try {
+          await AuthServices.initState();
+        } catch (e) {
+          print(e.toString());
+        }
+        Model.create();
+      }(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
+            print(error);
             return error;
           }
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Heads Up',
+            supportedLocales: [
+              Locale('en'),
+            ],
+            localizationsDelegates: [
+              CountryLocalizations.delegate,
+            ],
+            builder: (context, widget) {
+              return Provider(
+                create: (_) => AppConstants(context),
+                child: widget,
+              );
+            },
             theme: ThemeData(
               primarySwatch: Colors.pink,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
             debugShowCheckedModeBanner: false,
-            initialRoute: Constants.isLoggedIn ? "home" : "intro",
+            initialRoute: AuthServices.isLoggedIn ? "home" : "intro",
             routes: {
               "intro": (context) => welcome.IntroScreen(),
               "login": (context) => auth.AuthForm(),
-              "oauth": (context) => oauth.OauthForm(),
               "home": (context) => HomePage(),
+              "phone_auth": (context) => PhoneAuth(),
             },
           );
         } else {
@@ -68,7 +91,8 @@ Widget splash = Container(
   child: Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Image.asset("assets/images/welcome.png"),
+      Image.asset("assets/images/splash.png"),
+      SizedBox(height: 20),
       CircularProgressIndicator(),
     ],
   ),
@@ -77,6 +101,9 @@ Widget splash = Container(
 Widget error = Container(
   color: Colors.white,
   child: Center(
-    child: Text("Error"),
+    child: Text(
+      "Error",
+      textDirection: TextDirection.ltr,
+    ),
   ),
 );

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:app/model/model.dart';
+
+import 'services/service.dart';
 
 Widget loginForm(BuildContext context) {
   final _formKey = GlobalKey<FormState>();
@@ -80,21 +82,18 @@ Widget loginForm(BuildContext context) {
               "LOGIN",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                Model.newLogin(_username, _password)
-                    .then(
-                  (_) => Navigator.pushReplacementNamed(context, "home"),
-                )
-                    .catchError(
-                  (e) {
-                    print("login error: " + e.toString());
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text("Can not login")),
-                    );
-                  },
-                );
+                try {
+                  await AuthServices.emailSignIn(_username, _password);
+                  Navigator.pushReplacementNamed(context, "home");
+                } on FirebaseAuthException catch (e) {
+                  print(e.code);
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text(e.message),
+                  ));
+                }
               }
             },
           )

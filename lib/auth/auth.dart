@@ -1,3 +1,4 @@
+import 'package:app/auth/services/google_oauth.dart';
 import 'package:app/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
@@ -67,14 +68,25 @@ class _AuthFormState extends State<AuthForm> {
                       Expanded(child: Divider(indent: 10.0)),
                     ],
                   ),
-                  RaisedButton.icon(
+                  RaisedButton(
+                    onPressed: () async {
+                      try {
+                        await signInWithGoogle();
+                      } catch (e) {
+                        print("Error: ${e.toString()}");
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text("Cant login"),
+                        ));
+                      }
+                      Navigator.pushReplacementNamed(context, "home");
+                    },
+                    child: Text("sign in with google"),
+                  ),
+                  RaisedButton(
+                    child: Text("Sign in with phone no."),
                     onPressed: () =>
-                        Navigator.pushReplacementNamed(context, "oauth"),
-                    icon: Icon(Icons.mail_outline),
-                    label: Text(_register
-                        ? "Sign Up with google"
-                        : "sign in with google"),
-                  )
+                        Navigator.pushReplacementNamed(context, "phone_auth"),
+                  ),
                 ],
               )),
         ),

@@ -1,4 +1,5 @@
-import 'package:app/model/model.dart';
+import 'package:app/auth/services/service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 Widget signUpForm(BuildContext context) {
@@ -112,14 +113,17 @@ Widget signUpForm(BuildContext context) {
               "SIGN UP",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                Model.signUp(_username, _password, _email)
-                    .then(
-                        (_) => Navigator.pushReplacementNamed(context, "home"))
-                    .catchError((_) => Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text("Can not sign up"))));
+                try {
+                  await AuthServices.emailSignUp(_email, _username, _password);
+                  Navigator.pushReplacementNamed(context, "home");
+                } on FirebaseAuthException catch (e) {
+                  String msg = e.message;
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text(msg)));
+                }
               }
             },
           ),
