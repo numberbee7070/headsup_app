@@ -6,61 +6,77 @@ class HamburgerMenu extends StatefulWidget {
 }
 
 class _HamburgerMenuState extends State<HamburgerMenu> {
-  final double expandedRadius = 250;
+  final double expandedRadius = 180;
   final double shrinkedRadius = 25;
-  final duration = Duration(milliseconds: 500);
-  final curve = Curves.easeInOutCubic;
-  bool _expand = false;
+  final duration = Duration(milliseconds: 1000);
+  bool _expanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      overflow: Overflow.visible,
-      children: [
-        AnimatedPositioned(
-          curve: curve,
-          left: _expand ? -expandedRadius : 0,
-          top: _expand ? -expandedRadius : 0,
-          duration: duration,
-          child: Stack(
-            children: [
-              AnimatedContainer(
-                curve: curve,
-                height: _expand ? 2 * expandedRadius : 2 * shrinkedRadius,
-                width: _expand ? 2 * expandedRadius : 2 * shrinkedRadius,
-                duration: duration,
-                decoration: BoxDecoration(
-                  color: Colors.green[200],
-                  shape: BoxShape.circle,
-                ),
-              ),
-              Positioned(
-                left: expandedRadius + 50,
-                top: expandedRadius + 50,
-                child: Column(
-                  children: [
-                    RaisedButton(
-                      onPressed: null,
-                      child: Text("Logout"),
-                    ),
-                    RaisedButton(
-                      onPressed: null,
-                      child: Text("Profile"),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+    return AnimatedContainer(
+      duration: duration,
+      transform: Matrix4.identity()
+        ..translate(_expanded ? -expandedRadius / 3 : 0.0,
+            _expanded ? -expandedRadius / 3 : 0.0),
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            height: _expanded ? 2 * expandedRadius : 2 * shrinkedRadius,
+            width: _expanded ? 2 * expandedRadius : 2 * shrinkedRadius,
+            duration: duration,
+            decoration: BoxDecoration(
+              color: Colors.green[200],
+              shape: BoxShape.circle,
+            ),
           ),
-        ),
-        IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            this.setState(() {
-              this._expand = !this._expand;
-            });
-          },
-        ),
-      ],
+          Positioned(
+            left: expandedRadius / 1.5,
+            top: expandedRadius / 2,
+            child: Column(
+              children: [
+                RaisedButton(
+                  onPressed: null,
+                  child: Text("Home"),
+                ),
+                RaisedButton(
+                  onPressed: null,
+                  child: Text("Mood"),
+                ),
+                RaisedButton(
+                  onPressed: null,
+                  child: Text("Read"),
+                ),
+                RaisedButton(
+                  onPressed: null,
+                  child: Text("Therapy"),
+                ),
+                RaisedButton(
+                  onPressed: null,
+                  child: Text("Settings"),
+                ),
+              ],
+            ),
+          ),
+          AnimatedPositioned(
+            duration: duration,
+            top: _expanded ? expandedRadius / 3 : 0,
+            left: _expanded ? expandedRadius / 3 : 0,
+            child: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                this.setState(() {
+                  this._expanded = !this._expanded;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
