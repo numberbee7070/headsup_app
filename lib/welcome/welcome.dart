@@ -2,26 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 PageViewModel page1 = PageViewModel(
-  title: "Title of first page",
-  body: "Here's first screen",
-  image: Center(
-    child: Image.network("https://domaine.com/image.png", height: 175.0),
-  ),
+  title: "PLAY & RELAX",
+  image: Image.asset("assets/images/welcome_page1.png"),
+  body: "Lorem ipsum dolor sit amet",
+  decoration: PageDecoration(imageFlex: 3),
 );
 
 PageViewModel page2 = PageViewModel(
-  title: "Title of first page",
-  body: "The next screen",
-  image: const Center(child: Icon(Icons.android)),
+  title: "CONNECT WITH MATES",
+  image: Image.asset("assets/images/welcome_page2.png"),
+  body: "Lorem ipsum dolor sit amet",
+  decoration: PageDecoration(imageFlex: 3),
 );
 
 PageViewModel page3 = PageViewModel(
-  title: "Title of first page",
-  body: "yet another screen",
-  image: const Center(child: Icon(Icons.android)),
+  title: "TRUSTED EXPERTS",
+  image: Image.asset("assets/images/welcome_page3.png"),
+  body: "Lorem ipsum dolor sit amet",
+  decoration: PageDecoration(imageFlex: 3),
 );
 
-class IntroScreen extends StatelessWidget {
+class IntroScreen extends StatefulWidget {
+  @override
+  _IntroScreenState createState() => _IntroScreenState();
+}
+
+class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
@@ -32,15 +38,17 @@ class IntroScreen extends StatelessWidget {
         Navigator.of(context).pushNamed("login");
       },
       next: const Icon(Icons.navigate_next),
+      showSkipButton: true,
+      skip: const Text("Skip"),
       dotsDecorator: DotsDecorator(
-          size: const Size.square(10.0),
-          activeSize: const Size(20.0, 10.0),
-          activeColor: Theme.of(context).accentColor,
-          color: Colors.black26,
-          spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-          activeShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25.0))),
+        size: const Size.square(10.0),
+        activeSize: const Size(20.0, 10.0),
+        activeColor: Theme.of(context).accentColor,
+        color: Colors.black26,
+        spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+        activeShape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+      ),
     );
-    ;
   }
 }
