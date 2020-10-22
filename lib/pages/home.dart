@@ -1,7 +1,7 @@
-import 'package:app/auth/services/service.dart';
+import 'package:app/ui/bottom_bar.dart';
 import 'package:app/ui/hamburger_menu.dart';
 import 'package:flutter/material.dart';
-import '../auth/services/service.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,6 +23,9 @@ class _HomePageState extends State<HomePage> {
             HamburgerMenu(),
           ],
         ),
+        bottomNavigationBar: bottomNavBar,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FABMenuButton(),
       ),
     );
   }

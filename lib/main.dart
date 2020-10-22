@@ -2,14 +2,12 @@ import 'package:app/auth/phone_auth.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 
 import 'auth/auth.dart' as auth;
 import 'auth/services/service.dart';
 import 'model/model.dart';
 import 'pages/home.dart';
 import 'welcome/welcome.dart' as welcome;
-import 'constants.dart';
 
 void main() {
   _setupLogging();
@@ -59,12 +57,6 @@ class _MyAppState extends State<MyApp> {
             localizationsDelegates: [
               CountryLocalizations.delegate,
             ],
-            builder: (context, widget) {
-              return Provider(
-                create: (_) => AppConstants(context),
-                child: widget,
-              );
-            },
             theme: ThemeData(
               primarySwatch: Colors.pink,
               visualDensity: VisualDensity.adaptivePlatformDensity,

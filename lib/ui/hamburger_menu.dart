@@ -8,7 +8,7 @@ class HamburgerMenu extends StatefulWidget {
 class _HamburgerMenuState extends State<HamburgerMenu> {
   final double expandedRadius = 180;
   final double shrinkedRadius = 25;
-  final duration = Duration(milliseconds: 1000);
+  final duration = Duration(milliseconds: 200);
   bool _expanded = false;
 
   @override
@@ -35,7 +35,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
             ),
           ),
           Positioned(
-            left: expandedRadius / 1.5,
+            left: expandedRadius / 1.2,
             top: expandedRadius / 2,
             child: Column(
               children: [
