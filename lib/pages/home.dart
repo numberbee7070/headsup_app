@@ -1,10 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../ui/bottom_bar.dart';
 import '../ui/hamburger_menu.dart';
-import '../ui/shimmer_screen.dart';
+import '../data.dart' as data;
 
 class HomePage extends StatefulWidget {
   @override
@@ -42,9 +43,8 @@ class _HomePageState extends State<HomePage> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
-                    print(snapshot.data[0]["title"]);
                     return Padding(
-                      padding: const EdgeInsets.all(30.0),
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: ListView.separated(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, idx) => contentCard(
@@ -65,7 +65,9 @@ class _HomePageState extends State<HomePage> {
                     );
                   }
                 } else {
-                  return ShimmerScreen(
+                  return Shimmer.fromColors(
+                    baseColor: Colors.pink[300],
+                    highlightColor: Colors.pink[400],
                     child: shimmerCard(),
                   );
                 }
@@ -82,46 +84,63 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget contentCard({@required String title, @required String image}) =>
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
-        ),
-        child: Column(
-          children: [
-            Container(
-              child: Text(
-                title,
-                style: TextStyle(fontSize: 30.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              Container(
+                child: Text(
+                  title,
+                  style: TextStyle(fontSize: 30.0),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(image),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(image),
+              ),
+            ],
+          ),
         ),
       );
 
   Widget shimmerCard() => Padding(
         padding: const EdgeInsets.only(top: 50.0),
-        child: Column(
+        child: Wrap(
           children: [
             Card(
               child: SizedBox(
-                height: 150,
+                height: 200,
                 width: size.width,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                data.randomQuote(),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             Card(
               child: SizedBox(
-                height: 150,
+                height: 200,
                 width: size.width,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                data.randomQuote(),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             Card(
               child: SizedBox(
-                height: 150,
+                height: 200,
                 width: size.width,
               ),
             ),
