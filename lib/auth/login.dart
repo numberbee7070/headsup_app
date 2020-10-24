@@ -3,24 +3,41 @@ import 'package:flutter/material.dart';
 
 import 'services/service.dart';
 
-Widget loginForm(BuildContext context) {
+class LoginForm extends StatefulWidget {
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+
   String _username;
+
   String _password;
-  return Builder(
-    builder: (context) => Form(
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Image.asset("assets/images/login_page.png"),
+          Text(
+            "Heads Up",
+            style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).accentColor),
+          ),
           Container(
             decoration: BoxDecoration(
-              color: Colors.pink[200],
+              color: Colors.white,
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.pink[700],
+                  color: Colors.grey,
                   blurRadius: 15.0, // soften the shadow
                   spreadRadius: 0.2, //extend the shadow
                   offset: Offset(
@@ -36,7 +53,7 @@ Widget loginForm(BuildContext context) {
               onSaved: (String text) => _username = text,
               decoration: InputDecoration(
                 hintText: AutofillHints.username,
-                prefixIcon: Icon(Icons.account_circle),
+                prefixIcon: Icon(Icons.perm_identity),
                 border: InputBorder.none,
               ),
             ),
@@ -46,11 +63,11 @@ Widget loginForm(BuildContext context) {
           ),
           Container(
             decoration: BoxDecoration(
-              color: Colors.pink[200],
+              color: Colors.white,
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.pink[700],
+                  color: Colors.grey,
                   blurRadius: 15.0, // soften the shadow
                   spreadRadius: 0.2, //extend the shadow
                   offset: Offset(
@@ -99,6 +116,6 @@ Widget loginForm(BuildContext context) {
           )
         ],
       ),
-    ),
-  );
+    );
+  }
 }

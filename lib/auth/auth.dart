@@ -9,57 +9,23 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
-  bool _register = true;
+  bool _register = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.pink[200],
-                Colors.pink[300],
-                Colors.pink[400],
-              ],
-              stops: [
-                0.0,
-                0.3,
-                0.9,
-              ]),
-        ),
         child: SafeArea(
           child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
                 children: <Widget>[
-                  SizedBox(
-                    width: double.infinity,
-                  ),
-                  Text(
-                    "Heads Up!",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  _register ? signUpForm(context) : loginForm(context),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  RaisedButton(
-                    child: Text(_register ? "Already Registered" : "New User"),
+                  _register ? signUpForm(context) : LoginForm(),
+                  FlatButton(
+                    child: Text(
+                        _register ? "Already Registered? Login" : "New User"),
                     onPressed: () =>
                         this.setState(() => _register = !_register),
-                  ),
-                  SizedBox(
-                    height: 20,
                   ),
                   Row(
                     children: <Widget>[
@@ -69,6 +35,7 @@ class _AuthFormState extends State<AuthForm> {
                     ],
                   ),
                   RaisedButton(
+                    child: Text("sign in with google"),
                     onPressed: () async {
                       try {
                         await signInWithGoogle();
@@ -80,7 +47,6 @@ class _AuthFormState extends State<AuthForm> {
                       }
                       Navigator.pushReplacementNamed(context, "home");
                     },
-                    child: Text("sign in with google"),
                   ),
                   RaisedButton(
                     child: Text("Sign in with phone no."),
