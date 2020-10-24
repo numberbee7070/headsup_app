@@ -62,7 +62,8 @@ class _MyAppState extends State<MyApp> {
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
             debugShowCheckedModeBanner: false,
-            initialRoute: AuthServices.isLoggedIn ? "home" : "intro",
+            initialRoute: "home",
+            // initialRoute: AuthServices.isLoggedIn ? "home" : "intro",
             routes: {
               "intro": (context) => welcome.IntroScreen(),
               "login": (context) => auth.AuthForm(),
