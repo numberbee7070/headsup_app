@@ -1,6 +1,7 @@
 import 'package:app/auth/services/google_oauth.dart';
 import 'package:app/auth/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'login.dart';
 
 class AuthForm extends StatefulWidget {
@@ -35,8 +36,7 @@ class _AuthFormState extends State<AuthForm> {
                       Expanded(child: Divider(indent: 10.0)),
                     ],
                   ),
-                  RaisedButton(
-                    child: Text("sign in with google"),
+                  GoogleSignInButton(
                     onPressed: () async {
                       try {
                         await signInWithGoogle();
