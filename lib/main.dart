@@ -8,6 +8,7 @@ import 'auth/services/service.dart';
 import 'model/model.dart';
 import 'pages/home.dart';
 import 'welcome/welcome.dart' as welcome;
+import 'pages/diary.dart';
 
 void main() {
   _setupLogging();
@@ -68,6 +69,7 @@ class _MyAppState extends State<MyApp> {
               "login": (context) => auth.AuthForm(),
               "home": (context) => HomePage(),
               "phone_auth": (context) => PhoneAuth(),
+              "diary": (context) => Diary(),
             },
           );
         } else {

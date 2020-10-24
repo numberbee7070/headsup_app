@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
 
-Widget bottomNavBar = BottomAppBar(
-  shape: CircularNotchedRectangle(),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      IconButton(
-        onPressed: null,
-        icon: Icon(Icons.code),
+class BottomNavBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          IconButton(
+            onPressed: () => Navigator,
+            icon: Icon(Icons.home),
+          ),
+          IconButton(
+            onPressed: () => Navigator.pushReplacementNamed(context, "diary"),
+            icon: Icon(Icons.book),
+          ),
+          IconButton(
+            onPressed: null,
+            icon: Icon(Icons.code),
+          ),
+          IconButton(
+            onPressed: null,
+            icon: Icon(Icons.code),
+          ),
+        ],
       ),
-      IconButton(
-        onPressed: null,
-        icon: Icon(Icons.code),
-      ),
-      IconButton(
-        onPressed: null,
-        icon: Icon(Icons.code),
-      ),
-      IconButton(
-        onPressed: null,
-        icon: Icon(Icons.code),
-      ),
-    ],
-  ),
-);
+    );
+  }
+}
 
 class FABMenuButton extends StatefulWidget {
   @override
