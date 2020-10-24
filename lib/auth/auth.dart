@@ -22,8 +22,9 @@ class _AuthFormState extends State<AuthForm> {
                 children: <Widget>[
                   _register ? signUpForm(context) : LoginForm(),
                   FlatButton(
-                    child: Text(
-                        _register ? "Already Registered? Login" : "New User"),
+                    child: Text(_register
+                        ? "Already Registered? Login"
+                        : "New? Sign Up"),
                     onPressed: () =>
                         this.setState(() => _register = !_register),
                   ),
