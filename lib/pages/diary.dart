@@ -38,13 +38,14 @@ class _DiaryState extends State<Diary> {
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      image: DecorationImage(
-                        image: _image == null ? null : FileImage(_image),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
+                    decoration: _image != null
+                        ? BoxDecoration(
+                            image: DecorationImage(
+                              image: FileImage(_image),
+                              fit: BoxFit.fill,
+                            ),
+                          )
+                        : BoxDecoration(color: Colors.blueAccent),
                     child: Padding(
                       padding: EdgeInsets.all(15.0),
                       child: Column(
@@ -86,7 +87,10 @@ class _DiaryState extends State<Diary> {
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        print(pickedFile.path);
+        this.setState(() {
+          _image = File(pickedFile.path);
+        });
       } else {
         print('No image selected.');
       }
