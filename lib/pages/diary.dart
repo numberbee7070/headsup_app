@@ -12,7 +12,7 @@ class Diary extends StatefulWidget {
 }
 
 class _DiaryState extends State<Diary> {
-  final Key _scaffold = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
   File _image;
   @override
   Widget build(BuildContext context) {
@@ -58,11 +58,24 @@ class _DiaryState extends State<Diary> {
                             ),
                           ),
                           Container(
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white60,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                             child: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Enter message",
+                              ),
                               minLines: 1,
                               maxLines: 5,
                             ),
                           ),
+                          RaisedButton(
+                            onPressed: null,
+                            child: Text("Add"),
+                          )
                         ],
                       ),
                     ),
@@ -83,7 +96,7 @@ class _DiaryState extends State<Diary> {
   final picker = ImagePicker();
 
   Future<void> selectImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -92,6 +105,8 @@ class _DiaryState extends State<Diary> {
           _image = File(pickedFile.path);
         });
       } else {
+        _scaffold.currentState
+            .showSnackBar(SnackBar(content: Text("No image selected.")));
         print('No image selected.');
       }
     });
