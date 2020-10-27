@@ -22,7 +22,6 @@ dependencies:
   flutter:
     sdk: flutter
   introduction_screen: ^1.0.7
-  chopper: ^3.0.2
   provider: ^4.0.5
   json_annotation: ^3.0.1
   shared_preferences: '>=0.5.12 <2.0.0'
@@ -30,7 +29,8 @@ dependencies:
   google_sign_in: "^4.5.1"
   country_code_picker: ^1.6.0
   shimmer: ^1.1.2
-
+  image_picker: ^0.6.7+12
+  mime: ^0.9.7
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3

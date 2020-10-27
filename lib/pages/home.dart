@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
             HamburgerMenu(),
           ],
         ),
-        bottomNavigationBar: bottomNavBar,
+        bottomNavigationBar: BottomNavBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FABMenuButton(),
       ),
