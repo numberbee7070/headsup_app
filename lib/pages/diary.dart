@@ -1,8 +1,10 @@
 import 'dart:io';
 
-import 'package:image_picker/image_picker.dart';
+import 'package:app/model/http_backend.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../model/serializers.dart';
 import '../ui/bottom_bar.dart';
 import '../ui/hamburger_menu.dart';
 
@@ -14,6 +16,21 @@ class Diary extends StatefulWidget {
 class _DiaryState extends State<Diary> {
   final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
   File _image;
+  Future _future;
+  List<DiaryEntry> items;
+  TextEditingController textController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _future = loadDiary();
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +81,7 @@ class _DiaryState extends State<Diary> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: TextField(
+                              controller: textController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Enter message",
@@ -73,11 +91,44 @@ class _DiaryState extends State<Diary> {
                             ),
                           ),
                           RaisedButton(
-                            onPressed: null,
+                            onPressed: () {
+                              print(textController.text);
+                              if (textController.text.trim() == "") {
+                                return;
+                              }
+                              this.setState(() {
+                                this.items.insert(
+                                    0,
+                                    DiaryEntry(
+                                      text: textController.text.trim(),
+                                      datetime: DateTime.now(),
+                                    ));
+                              });
+                              createDiaryEntry(this.items[0], this._image);
+                            },
                             child: Text("Add"),
                           )
                         ],
                       ),
+                    ),
+                  ),
+                  Expanded(
+                    child: FutureBuilder(
+                      future: _future,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else {
+                          return ListView.builder(
+                            itemCount: items.length,
+                            itemBuilder: (context, idx) => ListTile(
+                              title: Text(items[idx].text),
+                              leading: Icon(Icons.account_tree),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   )
                 ],
@@ -110,5 +161,23 @@ class _DiaryState extends State<Diary> {
         print('No image selected.');
       }
     });
+  }
+
+  Future loadDiary() async {
+    await Future.delayed(Duration(seconds: 2));
+    var data = [
+      {
+        "text": "this is a new entry",
+        "datetime": DateTime.now().toIso8601String()
+      },
+      {
+        "text": "this is a second entry",
+        "datetime": DateTime.now().toIso8601String()
+      },
+    ];
+    this.setState(() {
+      items = data.map((Map e) => DiaryEntry.fromJson(e)).toList();
+    });
+    return;
   }
 }

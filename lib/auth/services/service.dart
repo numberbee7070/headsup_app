@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:logging/logging.dart';
 
-import '../../model/post_service.dart';
 import 'profile.dart';
 
 abstract class AuthServices {
@@ -76,7 +75,7 @@ abstract class AuthServices {
     }
     if (res.statusCode >= 400) {
       print("Http error ${res.statusCode}: ${res.toString()}");
-      throw HttpException();
+      throw Exception("http error");
     }
   }
 }

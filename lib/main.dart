@@ -5,7 +5,6 @@ import 'package:logging/logging.dart';
 
 import 'auth/auth.dart' as auth;
 import 'auth/services/service.dart';
-import 'model/model.dart';
 import 'pages/home.dart';
 import 'welcome/welcome.dart' as welcome;
 import 'pages/diary.dart';
@@ -29,7 +28,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
-    Model.dispose();
     super.dispose();
   }
 
@@ -42,7 +40,6 @@ class _MyAppState extends State<MyApp> {
         } catch (e) {
           print(e.toString());
         }
-        Model.create();
       }(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
