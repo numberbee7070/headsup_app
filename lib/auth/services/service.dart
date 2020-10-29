@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
 import 'profile.dart';
@@ -49,26 +51,27 @@ abstract class AuthServices {
         .user;
     // await user.sendEmailVerification();
     user.updateProfile(displayName: username);
-    // newSignUp();
+    newSignUp(username);
   }
 
   static logout() async {
     await _auth.signOut();
   }
 
-  static newSignUp() async {
-    HttpClient client = HttpClient();
-    String idtoken = await _auth.currentUser.getIdToken();
-    HttpClientResponse res;
+  static Future<Map<String, String>> get authHeader async {
+    final token = await accessToken;
+    return {"Authorization": "Token $token"};
+  }
+
+  static newSignUp(String username) async {
+    final uri = Uri.parse("https://kyukey.tech/headsup/signup/");
+    final token = await accessToken;
+    http.Response res;
     try {
-      res = await client
-          .postUrl(Uri.parse("https://kyukey.tech/headsup/api/newuser/"))
-          .then((HttpClientRequest req) {
-        req.write(
-          <String, String>{"idtoken": idtoken},
-        );
-        return req.close();
-      });
+      res = await http.post(uri,
+          body: json.encode({"idtoken": token, "username": username}),
+          headers: {"Content-Type": "application/json"});
+      print(res.body);
     } on SocketException catch (_) {
       print("connection error");
       rethrow;
