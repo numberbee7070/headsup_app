@@ -1,9 +1,11 @@
-import 'package:app/model/serializers.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../model/http_backend.dart';
+import '../model/serializers.dart';
 
 class ArticlePage extends StatefulWidget {
+  static String routeName = "article";
   @override
   _ArticlePageState createState() => _ArticlePageState();
 }

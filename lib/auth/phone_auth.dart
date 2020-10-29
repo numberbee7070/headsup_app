@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PhoneAuth extends StatefulWidget {
+  static String routeName = "phone_auth";
   @override
   _PhoneAuthState createState() => _PhoneAuthState();
 }

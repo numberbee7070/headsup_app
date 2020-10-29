@@ -1,14 +1,14 @@
-import 'package:app/auth/phone_auth.dart';
-import 'package:app/pages/article.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-import 'auth/auth.dart' as auth;
+import 'auth/auth.dart';
+import 'auth/phone_auth.dart';
 import 'auth/services/service.dart';
-import 'pages/home.dart';
-import 'welcome/welcome.dart' as welcome;
+import 'pages/article.dart';
 import 'pages/diary.dart';
+import 'pages/home.dart';
+import 'welcome/welcome.dart';
 
 void main() {
   _setupLogging();
@@ -63,12 +63,12 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             initialRoute: AuthServices.isLoggedIn ? "home" : "intro",
             routes: {
-              "intro": (context) => welcome.IntroScreen(),
-              "login": (context) => auth.AuthForm(),
-              "home": (context) => HomePage(),
-              "phone_auth": (context) => PhoneAuth(),
-              "diary": (context) => Diary(),
-              "article": (context) => ArticlePage(),
+              IntroScreen.routeName: (context) => IntroScreen(),
+              AuthForm.routeName: (context) => AuthForm(),
+              HomePage.routeName: (context) => HomePage(),
+              PhoneAuth.routeName: (context) => PhoneAuth(),
+              Diary.routeName: (context) => Diary(),
+              ArticlePage.routeName: (context) => ArticlePage(),
             },
           );
         } else {

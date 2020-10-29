@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:app/auth/services/service.dart';
-import 'package:app/model/http_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../model/http_backend.dart';
 import '../model/serializers.dart';
 import '../ui/bottom_bar.dart';
 import '../ui/hamburger_menu.dart';
 
 class Diary extends StatefulWidget {
+  static String routeName = "diary";
   @override
   _DiaryState createState() => _DiaryState();
 }

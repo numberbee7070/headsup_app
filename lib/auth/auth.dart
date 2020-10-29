@@ -1,11 +1,13 @@
-import 'package:app/auth/services/google_oauth.dart';
-import 'package:app/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'login.dart';
+
 import '../ui/phone_login_button.dart';
+import 'login.dart';
+import 'services/google_oauth.dart';
+import 'signup.dart';
 
 class AuthForm extends StatefulWidget {
+  static String routeName = "auth";
   @override
   _AuthFormState createState() => _AuthFormState();
 }

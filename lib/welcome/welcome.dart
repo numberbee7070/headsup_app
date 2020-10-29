@@ -23,6 +23,7 @@ PageViewModel page3 = PageViewModel(
 );
 
 class IntroScreen extends StatefulWidget {
+  static String routeName = "intro";
   @override
   _IntroScreenState createState() => _IntroScreenState();
 }

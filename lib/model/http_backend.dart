@@ -1,11 +1,12 @@
 import 'dart:convert';
-
-import 'package:app/model/serializers.dart';
 import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
+
 import '../auth/services/service.dart';
+import '../model/serializers.dart';
 
 final BASE_URI = "https://kyukey.tech/headsup/";
 

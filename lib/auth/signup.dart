@@ -1,6 +1,7 @@
-import 'package:app/auth/services/service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'services/service.dart';
 
 Widget signUpForm(BuildContext context) {
   final _formKey = GlobalKey<FormState>();

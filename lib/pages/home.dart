@@ -1,15 +1,16 @@
 import 'dart:ui';
 
-import 'package:app/model/http_backend.dart';
-import 'package:app/model/serializers.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../data.dart' as data;
+import '../model/http_backend.dart';
+import '../model/serializers.dart';
 import '../ui/bottom_bar.dart';
 import '../ui/hamburger_menu.dart';
-import '../data.dart' as data;
 
 class HomePage extends StatefulWidget {
+  static String routeName = "home";
   @override
   _HomePageState createState() => _HomePageState();
 }
