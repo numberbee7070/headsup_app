@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/auth/services/service.dart';
 import 'package:app/model/http_backend.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -100,7 +101,7 @@ class _DiaryState extends State<Diary> {
                                 this.items.insert(
                                     0,
                                     DiaryEntry(
-                                      text: textController.text.trim(),
+                                      content: textController.text.trim(),
                                       datetime: DateTime.now(),
                                     ));
                               });
@@ -122,9 +123,12 @@ class _DiaryState extends State<Diary> {
                         } else {
                           return ListView.builder(
                             itemCount: items.length,
-                            itemBuilder: (context, idx) => ListTile(
-                              title: Text(items[idx].text),
-                              leading: Icon(Icons.account_tree),
+                            itemBuilder: (context, idx) => Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListTile(
+                                title: Text(items[idx].content),
+                                leading: Image.network(items[idx].image),
+                              ),
                             ),
                           );
                         }
@@ -164,20 +168,6 @@ class _DiaryState extends State<Diary> {
   }
 
   Future loadDiary() async {
-    await Future.delayed(Duration(seconds: 2));
-    var data = [
-      {
-        "text": "this is a new entry",
-        "datetime": DateTime.now().toIso8601String()
-      },
-      {
-        "text": "this is a second entry",
-        "datetime": DateTime.now().toIso8601String()
-      },
-    ];
-    this.setState(() {
-      items = data.map((Map e) => DiaryEntry.fromJson(e)).toList();
-    });
-    return;
+    this.items = await fetchDiaryEntries();
   }
 }

@@ -8,8 +8,8 @@ part of 'serializers.dart';
 
 DiaryEntry _$DiaryEntryFromJson(Map<String, dynamic> json) {
   return DiaryEntry(
-    text: json['text'] as String,
-    imageurl: json['imageurl'] as String,
+    content: json['content'] as String,
+    image: json['image'] as String,
     datetime: json['datetime'] == null
         ? null
         : DateTime.parse(json['datetime'] as String),
@@ -18,21 +18,23 @@ DiaryEntry _$DiaryEntryFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DiaryEntryToJson(DiaryEntry instance) =>
     <String, dynamic>{
-      'text': instance.text,
+      'content': instance.content,
       'datetime': instance.datetime?.toIso8601String(),
-      'imageurl': instance.imageurl,
+      'image': instance.image,
     };
 
 Article _$ArticleFromJson(Map<String, dynamic> json) {
   return Article(
-    title: json['title'] as String,
-    text: json['text'] as String,
+    chapter: (json['chapter'] as num)?.toDouble(),
+    body: (json['body'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e as String),
+    ),
     imageurl: json['imageurl'] as String,
   );
 }
 
 Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
-      'title': instance.title,
+      'chapter': instance.chapter,
       'imageurl': instance.imageurl,
-      'text': instance.text,
+      'body': instance.body,
     };

@@ -1,4 +1,5 @@
 import 'package:app/auth/phone_auth.dart';
+import 'package:app/pages/article.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -60,14 +61,14 @@ class _MyAppState extends State<MyApp> {
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
             debugShowCheckedModeBanner: false,
-            initialRoute: "home",
-            // initialRoute: AuthServices.isLoggedIn ? "home" : "intro",
+            initialRoute: AuthServices.isLoggedIn ? "home" : "intro",
             routes: {
               "intro": (context) => welcome.IntroScreen(),
               "login": (context) => auth.AuthForm(),
               "home": (context) => HomePage(),
               "phone_auth": (context) => PhoneAuth(),
               "diary": (context) => Diary(),
+              "article": (context) => ArticlePage(),
             },
           );
         } else {

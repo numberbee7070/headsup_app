@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:app/model/http_backend.dart';
+import 'package:app/model/serializers.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -27,19 +29,8 @@ class _HomePageState extends State<HomePage> {
               maxHeight: double.infinity,
               child: Image.asset("assets/images/home_bg.png"),
             ),
-            FutureBuilder(
-              future: Future.delayed(
-                  Duration(seconds: 2),
-                  () => [
-                        {
-                          "title": "Attention",
-                          "image": "assets/images/attention.png"
-                        },
-                        {
-                          "title": "Attention",
-                          "image": "assets/images/attention.png",
-                        }
-                      ]),
+            FutureBuilder<List<Article>>(
+              future: fetchArticles(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
@@ -48,8 +39,10 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.separated(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, idx) => contentCard(
-                          title: snapshot.data[idx]["title"],
-                          image: snapshot.data[idx]["image"],
+                          title: snapshot.data[idx].body["title"],
+                          // image: snapshot.data[idx]["image"],
+                          image: null,
+                          chapter: snapshot.data[idx].chapter.toInt(),
                         ),
                         separatorBuilder: (BuildContext context, int index) =>
                             Divider(
@@ -83,27 +76,34 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget contentCard({@required String title, @required String image}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.white,
-          ),
-          child: Column(
-            children: [
-              Container(
-                child: Text(
-                  title,
-                  style: TextStyle(fontSize: 30.0),
+  Widget contentCard(
+          {@required String title,
+          @required String image,
+          @required int chapter}) =>
+      GestureDetector(
+        onTap: () =>
+            Navigator.pushNamed(context, "article", arguments: chapter),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.white,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: 20.0),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(image),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(), // replace with network image
+                ),
+              ],
+            ),
           ),
         ),
       );
