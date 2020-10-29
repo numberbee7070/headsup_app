@@ -16,11 +16,18 @@ class _PhoneAuthState extends State<PhoneAuth> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _isCodeSent = false;
   bool _enableSubmit = false;
-  String _phone, _code;
   String _verificationId;
   String _countryCode = CountryCode.fromCode("IN").dialCode;
   int _secondsLeft = 30;
-  Timer _timer;
+  TextEditingController _otpController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    _otpController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,45 +37,77 @@ class _PhoneAuthState extends State<PhoneAuth> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           decoration: BoxDecoration(
-            color: Colors.blueAccent,
+            color: Colors.white,
           ),
           child: _isCodeSent
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(hintText: 'Enter OTP'),
-                      onChanged: (val) => this._code = val,
+                    Text(
+                      _enableSubmit
+                          ? "Enter OTP"
+                          : "Wating for OTP 00:${_secondsLeft.toString().padLeft(2, '0')}",
                     ),
-                    Text("00:$_secondsLeft"),
-                    RaisedButton(
-                        onPressed: _enableSubmit ? signInWithCode : null),
+                    SizedBox(height: 20.0),
+                    TextField(
+                      controller: _otpController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: 'Enter OTP',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    FlatButton(
+                      color: Colors.redAccent,
+                      textColor: Colors.white,
+                      child: Text("Verify"),
+                      onPressed: _enableSubmit ? signInWithCode : null,
+                    ),
                   ],
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CountryCodePicker(
-                      onChanged: (CountryCode countryCode) => this.setState(() {
-                        this._countryCode = countryCode.dialCode;
-                      }),
-                      initialSelection: 'IN',
-                      showCountryOnly: true,
-                      showOnlyCountryWhenClosed: true,
-                      alignLeft: false,
+                    Stack(
+                      alignment: AlignmentDirectional.centerEnd,
+                      children: [
+                        Icon(Icons.arrow_drop_down),
+                        CountryCodePicker(
+                          onChanged: (CountryCode countryCode) =>
+                              this.setState(() {
+                            this._countryCode = countryCode.dialCode;
+                          }),
+                          padding: EdgeInsets.only(
+                            left: 15.0,
+                            top: 10.0,
+                            bottom: 10.0,
+                            right: 30.0,
+                          ),
+                          initialSelection: 'IN',
+                          favorite: ['IN', 'US'],
+                          showCountryOnly: true,
+                          showOnlyCountryWhenClosed: true,
+                          alignLeft: false,
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 20.0),
                     TextField(
+                      controller: _phoneController,
+                      autofocus: true,
                       keyboardType: TextInputType.phone,
-                      onChanged: (val) => this._phone = val,
                       decoration: InputDecoration(
                         hintText: 'Enter Phone number',
                         prefixIcon: Padding(
-                            padding: EdgeInsets.all(15),
-                            child: Text(this._countryCode)),
+                          padding: EdgeInsets.all(15),
+                          child: Text(this._countryCode),
+                        ),
+                        border: OutlineInputBorder(),
                       ),
                     ),
-                    RaisedButton(
+                    FlatButton(
+                      color: Colors.redAccent,
+                      textColor: Colors.white,
                       child: Text("SEND OTP"),
                       onPressed: phoneAuth,
                     ),
@@ -81,7 +120,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    Timer.periodic(
       oneSec,
       (Timer timer) => setState(
         () {
@@ -114,7 +153,8 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
   Future signInWithCode() async {
     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
-        verificationId: this._verificationId, smsCode: this._code);
+        verificationId: this._verificationId,
+        smsCode: this._otpController.text);
     try {
       await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
       moveToHome();
@@ -127,9 +167,10 @@ class _PhoneAuthState extends State<PhoneAuth> {
   Future<void> phoneAuth() async {
     var _auth = FirebaseAuth.instance;
     await _auth.verifyPhoneNumber(
-      phoneNumber: this._countryCode + this._phone,
+      phoneNumber: this._countryCode + this._phoneController.text,
       verificationCompleted: (PhoneAuthCredential credential) async {
         // ANDROID ONLY Sign the user in with the auto-generated credential
+        _otpController.text = credential.smsCode;
         await _auth.signInWithCredential(credential);
         displaySnackBar("successfully signed in");
         print("phone: ${_auth.currentUser.phoneNumber}");
