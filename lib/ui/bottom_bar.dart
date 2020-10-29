@@ -58,6 +58,7 @@ class _FABMenuButtonState extends State<FABMenuButton>
         AnimatedBuilder(
           animation: animation,
           child: FloatingActionButton(
+            heroTag: null,
             onPressed: null,
             child: Icon(Icons.create),
           ),
@@ -69,6 +70,7 @@ class _FABMenuButtonState extends State<FABMenuButton>
         AnimatedBuilder(
           animation: animation,
           child: FloatingActionButton(
+            heroTag: null,
             onPressed: null,
             child: Icon(Icons.create),
           ),
@@ -78,6 +80,7 @@ class _FABMenuButtonState extends State<FABMenuButton>
           ),
         ),
         FloatingActionButton(
+          heroTag: null,
           onPressed: () => this.setState(() {
             if (controller.isCompleted) {
               controller.reverse();
