@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../auth/auth.dart';
+import '../auth/services/service.dart';
+
 class HamburgerMenu extends StatefulWidget {
   @override
   _HamburgerMenuState createState() => _HamburgerMenuState();
@@ -40,8 +43,11 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
             child: Column(
               children: [
                 RaisedButton(
-                  onPressed: null,
-                  child: Text("Home"),
+                  onPressed: () {
+                    AuthServices.logout();
+                    Navigator.pushReplacementNamed(context, AuthForm.routeName);
+                  },
+                  child: Text("Logout"),
                 ),
                 RaisedButton(
                   onPressed: null,
