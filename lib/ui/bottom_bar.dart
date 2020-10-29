@@ -9,20 +9,12 @@ class BottomNavBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconButton(
-            onPressed: () => Navigator,
+            onPressed: () => Navigator.pushReplacementNamed(context, "home"),
             icon: Icon(Icons.home),
           ),
           IconButton(
             onPressed: () => Navigator.pushReplacementNamed(context, "diary"),
             icon: Icon(Icons.book),
-          ),
-          IconButton(
-            onPressed: null,
-            icon: Icon(Icons.code),
-          ),
-          IconButton(
-            onPressed: null,
-            icon: Icon(Icons.code),
           ),
         ],
       ),
