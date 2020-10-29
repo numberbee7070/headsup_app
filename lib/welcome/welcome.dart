@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import '../auth/auth.dart';
 
 PageViewModel page1 = PageViewModel(
   title: "PLAY & RELAX",
@@ -35,8 +36,7 @@ class _IntroScreenState extends State<IntroScreen> {
       pages: <PageViewModel>[page1, page2, page3],
       done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
       onDone: () {
-        Navigator.of(context).pop();
-        Navigator.of(context).pushNamed("login");
+        Navigator.pushReplacementNamed(context, AuthForm.routeName);
       },
       next: const Icon(Icons.navigate_next),
       showSkipButton: true,

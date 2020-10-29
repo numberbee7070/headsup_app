@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/home.dart';
 import 'services/service.dart';
 
 Widget signUpForm(BuildContext context) {
@@ -119,7 +120,7 @@ Widget signUpForm(BuildContext context) {
                 _formKey.currentState.save();
                 try {
                   await AuthServices.emailSignUp(_email, _username, _password);
-                  Navigator.pushReplacementNamed(context, "home");
+                  Navigator.pushReplacementNamed(context, HomePage.routeName);
                 } on FirebaseAuthException catch (e) {
                   String msg = e.message;
                   Scaffold.of(context)

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../pages/diary.dart';
+import '../pages/home.dart';
+
 class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,11 +12,13 @@ class BottomNavBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconButton(
-            onPressed: () => Navigator.pushReplacementNamed(context, "home"),
+            onPressed: () =>
+                Navigator.pushReplacementNamed(context, HomePage.routeName),
             icon: Icon(Icons.home),
           ),
           IconButton(
-            onPressed: () => Navigator.pushReplacementNamed(context, "diary"),
+            onPressed: () =>
+                Navigator.pushReplacementNamed(context, Diary.routeName),
             icon: Icon(Icons.book),
           ),
         ],

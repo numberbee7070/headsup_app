@@ -8,6 +8,7 @@ import '../model/http_backend.dart';
 import '../model/serializers.dart';
 import '../ui/bottom_bar.dart';
 import '../ui/hamburger_menu.dart';
+import 'article.dart';
 
 class HomePage extends StatefulWidget {
   static String routeName = "home";
@@ -85,8 +86,8 @@ class _HomePageState extends State<HomePage> {
           @required String image,
           @required int chapter}) =>
       GestureDetector(
-        onTap: () =>
-            Navigator.pushNamed(context, "article", arguments: chapter),
+        onTap: () => Navigator.pushNamed(context, ArticlePage.routeName,
+            arguments: chapter),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Container(

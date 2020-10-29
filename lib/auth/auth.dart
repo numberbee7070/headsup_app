@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
+import '../pages/home.dart';
 import '../ui/phone_login_button.dart';
 import 'login.dart';
+import 'phone_auth.dart';
 import 'services/google_oauth.dart';
 import 'signup.dart';
 
@@ -50,12 +52,13 @@ class _AuthFormState extends State<AuthForm> {
                           content: Text("Cant login"),
                         ));
                       }
-                      Navigator.pushReplacementNamed(context, "home");
+                      Navigator.pushReplacementNamed(
+                          context, HomePage.routeName);
                     },
                   ),
                   PhoneLoginButton(
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, "phone_auth"),
+                    onPressed: () => Navigator.pushReplacementNamed(
+                        context, PhoneAuth.routeName),
                   ),
                 ],
               )),

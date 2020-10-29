@@ -4,6 +4,8 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/home.dart';
+
 class PhoneAuth extends StatefulWidget {
   static String routeName = "phone_auth";
   @override
@@ -107,7 +109,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   }
 
   void moveToHome() {
-    Navigator.pushReplacementNamed(context, "home");
+    Navigator.pushReplacementNamed(context, HomePage.routeName);
   }
 
   Future signInWithCode() async {

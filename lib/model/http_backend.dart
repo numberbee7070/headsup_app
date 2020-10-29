@@ -46,10 +46,8 @@ Future<List<DiaryEntry>> fetchDiaryEntries() async {
     http.Response res = await http.get(BASE_URI + "diary/",
         headers: await AuthServices.authHeader);
     List l = jsonDecode(res.body) as List;
-    print(l);
     List<DiaryEntry> diaries =
         l.map((obj) => DiaryEntry.fromJson(obj)).toList();
-    print(diaries);
     return diaries;
   } catch (e) {
     print(e);
@@ -62,7 +60,6 @@ Future<List<Article>> fetchArticles() async {
     http.Response res = await http.get(BASE_URI + "articles/",
         headers: await AuthServices.authHeader);
     List l = jsonDecode(res.body) as List;
-    print(l);
     List<Article> articles = l.map((obj) => Article.fromJson(obj)).toList();
     return articles;
   } catch (e) {
@@ -74,9 +71,7 @@ Future<List<Article>> fetchArticles() async {
 Future<Article> fetchArticle(int idx) async {
   try {
     http.Response res = await http.get(BASE_URI + "articles/$idx");
-    print(res.statusCode);
     Map data = jsonDecode(res.body) as Map;
-    print(data);
     return Article.fromJson(data);
   } catch (e) {
     print(e);

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/home.dart';
 import 'services/service.dart';
 
 class LoginForm extends StatefulWidget {
@@ -104,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
                 _formKey.currentState.save();
                 try {
                   await AuthServices.emailSignIn(_username, _password);
-                  Navigator.pushReplacementNamed(context, "home");
+                  Navigator.pushReplacementNamed(context, HomePage.routeName);
                 } on FirebaseAuthException catch (e) {
                   print(e.code);
                   Scaffold.of(context).showSnackBar(SnackBar(
