@@ -143,7 +143,10 @@ class _DiaryState extends State<Diary> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(),
-      floatingActionButton: FABMenuButton(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.gamepad_rounded),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

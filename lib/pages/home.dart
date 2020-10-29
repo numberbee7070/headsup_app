@@ -72,7 +72,10 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: BottomNavBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FABMenuButton(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.gamepad_rounded),
+        ),
       ),
     );
   }
