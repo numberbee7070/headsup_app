@@ -3,6 +3,7 @@ import 'package:app/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'login.dart';
+import '../ui/phone_login_button.dart';
 
 class AuthForm extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         child: SafeArea(
           child: Padding(
@@ -49,8 +51,7 @@ class _AuthFormState extends State<AuthForm> {
                       Navigator.pushReplacementNamed(context, "home");
                     },
                   ),
-                  RaisedButton(
-                    child: Text("Sign in with phone no."),
+                  PhoneLoginButton(
                     onPressed: () =>
                         Navigator.pushReplacementNamed(context, "phone_auth"),
                   ),
