@@ -102,7 +102,7 @@ class _DiaryState extends State<Diary> {
                                     0,
                                     DiaryEntry(
                                       content: textController.text.trim(),
-                                      datetime: DateTime.now(),
+                                      created: DateTime.now(),
                                     ));
                               });
                               createDiaryEntry(this.items[0], this._image);

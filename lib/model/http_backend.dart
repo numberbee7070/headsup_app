@@ -8,7 +8,7 @@ import 'package:mime/mime.dart';
 import '../auth/services/service.dart';
 import '../model/serializers.dart';
 
-final BASE_URI = "https://kyukey.tech/headsup/";
+const BASE_URI = "https://mentalheadsup.com/api/";
 
 Future<Map<String, dynamic>> createDiaryEntry(
   DiaryEntry diaryEntry,
@@ -70,7 +70,8 @@ Future<List<Article>> fetchArticles() async {
 
 Future<Article> fetchArticle(int idx) async {
   try {
-    http.Response res = await http.get(BASE_URI + "articles/$idx");
+    http.Response res = await http.get(BASE_URI + "articles/$idx",
+        headers: await AuthServices.authHeader);
     Map data = jsonDecode(res.body) as Map;
     return Article.fromJson(data);
   } catch (e) {

@@ -41,10 +41,9 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.separated(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, idx) => contentCard(
-                          title: snapshot.data[idx].body["title"],
-                          // image: snapshot.data[idx]["image"],
-                          image: null,
-                          chapter: snapshot.data[idx].chapter.toInt(),
+                          title: snapshot.data[idx].title,
+                          image: snapshot.data[idx].image,
+                          id: snapshot.data[idx].id,
                         ),
                         separatorBuilder: (BuildContext context, int index) =>
                             Divider(
@@ -82,12 +81,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget contentCard(
-          {@required String title,
-          @required String image,
-          @required int chapter}) =>
+          {@required String title, @required String image, @required int id}) =>
       GestureDetector(
-        onTap: () => Navigator.pushNamed(context, ArticlePage.routeName,
-            arguments: chapter),
+        onTap: () =>
+            Navigator.pushNamed(context, ArticlePage.routeName, arguments: id),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Container(
@@ -100,12 +97,13 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   child: Text(
                     title,
+                    textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 20.0),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(), // replace with network image
+                  child: Image.network(image), // replace with network image
                 ),
               ],
             ),

@@ -5,11 +5,11 @@ part 'serializers.g.dart';
 @JsonSerializable()
 class DiaryEntry {
   final String content;
-  final DateTime datetime;
+  final DateTime created;
   @JsonKey(nullable: true)
   final String image;
 
-  DiaryEntry({this.content, this.image, this.datetime});
+  DiaryEntry({this.content, this.image, this.created});
   factory DiaryEntry.fromJson(Map<String, dynamic> json) =>
       _$DiaryEntryFromJson(json);
   Map<String, dynamic> toJson() => _$DiaryEntryToJson(this);
@@ -17,13 +17,15 @@ class DiaryEntry {
 
 @JsonSerializable()
 class Article {
-  final double chapter;
+  final int id;
+  final String image;
+  final String title;
   @JsonKey(nullable: true)
-  final String imageurl;
+  final String body;
   @JsonKey(nullable: true)
-  final Map<String, String> body;
+  final String audio;
 
-  Article({this.chapter, this.body, this.imageurl});
+  Article({this.id, this.title, this.body, this.image, this.audio});
   factory Article.fromJson(Map<String, dynamic> json) =>
       _$ArticleFromJson(json);
   Map<String, dynamic> toJson() => _$ArticleToJson(this);

@@ -48,7 +48,14 @@ class _ArticlePageState extends State<ArticlePage> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
-                      return Text(snapshot.data.body["title"]);
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Text(
+                          snapshot.data.title,
+                          style: TextStyle(fontSize: 30.0),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
                     } else {
                       return Text("Error occured");
                     }
@@ -68,7 +75,19 @@ class _ArticlePageState extends State<ArticlePage> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
-                      return Text(snapshot.data.body["text"]);
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text(
+                            snapshot.data.body,
+                            style: TextStyle(
+                              letterSpacing: 1.2,
+                              height: 1.5,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      );
                     } else {
                       return Text("Error occured");
                     }

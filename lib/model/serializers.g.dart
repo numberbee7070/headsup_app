@@ -10,31 +10,33 @@ DiaryEntry _$DiaryEntryFromJson(Map<String, dynamic> json) {
   return DiaryEntry(
     content: json['content'] as String,
     image: json['image'] as String,
-    datetime: json['datetime'] == null
+    created: json['created'] == null
         ? null
-        : DateTime.parse(json['datetime'] as String),
+        : DateTime.parse(json['created'] as String),
   );
 }
 
 Map<String, dynamic> _$DiaryEntryToJson(DiaryEntry instance) =>
     <String, dynamic>{
       'content': instance.content,
-      'datetime': instance.datetime?.toIso8601String(),
+      'created': instance.created?.toIso8601String(),
       'image': instance.image,
     };
 
 Article _$ArticleFromJson(Map<String, dynamic> json) {
   return Article(
-    chapter: (json['chapter'] as num)?.toDouble(),
-    body: (json['body'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
-    ),
-    imageurl: json['imageurl'] as String,
+    id: json['id'] as int,
+    title: json['title'] as String,
+    body: json['body'] as String,
+    image: json['image'] as String,
+    audio: json['audio'] as String,
   );
 }
 
 Map<String, dynamic> _$ArticleToJson(Article instance) => <String, dynamic>{
-      'chapter': instance.chapter,
-      'imageurl': instance.imageurl,
+      'id': instance.id,
+      'image': instance.image,
+      'title': instance.title,
       'body': instance.body,
+      'audio': instance.audio,
     };
