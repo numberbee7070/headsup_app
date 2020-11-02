@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            print(error);
+            print(snapshot.error.toString());
             return error;
           }
           return MaterialApp(
@@ -59,6 +59,7 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(
               primarySwatch: Colors.pink,
               visualDensity: VisualDensity.adaptivePlatformDensity,
+              fontFamily: 'Helvetica',
             ),
             debugShowCheckedModeBanner: false,
             initialRoute: AuthServices.isLoggedIn
