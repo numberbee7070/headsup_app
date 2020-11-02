@@ -36,7 +36,6 @@ class _FABMenuButtonState extends State<FABMenuButton>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation animation;
-  bool _active = false;
 
   @override
   void initState() {

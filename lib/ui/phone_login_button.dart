@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:flutter_auth_buttons/src/button.dart';
 
 class PhoneLoginButton extends StatelessWidget {
