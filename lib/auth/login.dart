@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../pages/home.dart';
 import 'services/service.dart';
+import '../ui/text_fields.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -11,10 +12,15 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  String _username;
-
-  String _password;
+  @override
+  void dispose() {
+    this.emailController.dispose();
+    this.passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,62 +38,19 @@ class _LoginFormState extends State<LoginForm> {
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).accentColor),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 15.0, // soften the shadow
-                  spreadRadius: 0.2, //extend the shadow
-                  offset: Offset(
-                    0, // Move to right 10  horizontally
-                    8.0, // Move to bottom 10 Vertically
-                  ),
-                )
-              ],
-            ),
-            child: TextFormField(
-              cursorColor: Theme.of(context).accentColor,
-              keyboardType: TextInputType.emailAddress,
-              onSaved: (String text) => _username = text,
-              decoration: InputDecoration(
-                hintText: AutofillHints.username,
-                prefixIcon: Icon(Icons.perm_identity),
-                border: InputBorder.none,
-              ),
-            ),
+          AuthTextField(
+            controller: emailController,
+            prefixIcon: Icon(Icons.perm_identity),
+            hintText: AutofillHints.email,
           ),
           SizedBox(
             height: 20,
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 15.0, // soften the shadow
-                  spreadRadius: 0.2, //extend the shadow
-                  offset: Offset(
-                    0, // Move to right 10  horizontally
-                    8.0, // Move to bottom 10 Vertically
-                  ),
-                )
-              ],
-            ),
-            child: TextFormField(
-              cursorColor: Theme.of(context).primaryColor,
-              obscureText: true,
-              onSaved: (String text) => _password = text,
-              decoration: InputDecoration(
-                hintText: AutofillHints.password,
-                prefixIcon: Icon(Icons.lock),
-                border: InputBorder.none,
-              ),
-            ),
+          AuthTextField(
+            controller: passwordController,
+            prefixIcon: Icon(Icons.lock),
+            hintText: AutofillHints.password,
+            obscure: true,
           ),
           SizedBox(
             height: 20,
@@ -102,9 +65,11 @@ class _LoginFormState extends State<LoginForm> {
             ),
             onPressed: () async {
               if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
                 try {
-                  await AuthServices.emailSignIn(_username, _password);
+                  await AuthServices.emailSignIn(
+                    this.emailController.text,
+                    this.passwordController.text,
+                  );
                   Navigator.pushReplacementNamed(context, HomePage.routeName);
                 } on FirebaseAuthException catch (e) {
                   print(e.code);

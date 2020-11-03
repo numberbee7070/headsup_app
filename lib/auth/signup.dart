@@ -1,108 +1,52 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/home.dart';
+import '../ui/text_fields.dart';
 import 'services/service.dart';
 
-Widget signUpForm(BuildContext context) {
-  final _formKey = GlobalKey<FormState>();
-  String _username, _password, _email;
-  return Builder(
-    builder: (context) => Form(
+class SignUpForm extends StatefulWidget {
+  final Function signUpCallBack;
+  SignUpForm({Key key, this.signUpCallBack}) : super(key: key);
+
+  @override
+  _SignUpFormState createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpForm> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.pink[200],
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.pink[700],
-                  blurRadius: 15.0, // soften the shadow
-                  spreadRadius: 0.2, //extend the shadow
-                  offset: Offset(
-                    0, // Move to right 10  horizontally
-                    8.0, // Move to bottom 10 Vertically
-                  ),
-                )
-              ],
-            ),
-            child: TextFormField(
-              cursorColor: Theme.of(context).accentColor,
-              keyboardType: TextInputType.emailAddress,
-              onSaved: (value) => _username = value,
-              decoration: InputDecoration(
-                hintText: AutofillHints.username,
-                prefixIcon: Icon(Icons.account_circle),
-                border: InputBorder.none,
-              ),
-            ),
+          AuthTextField(
+            controller: this.emailController,
+            hintText: AutofillHints.email,
+            prefixIcon: Icon(Icons.account_circle),
           ),
           SizedBox(
             height: 20,
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.pink[200],
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.pink[700],
-                  blurRadius: 15.0, // soften the shadow
-                  spreadRadius: 0.2, //extend the shadow
-                  offset: Offset(
-                    0, // Move to right 10  horizontally
-                    8.0, // Move to bottom 10 Vertically
-                  ),
-                )
-              ],
-            ),
-            child: TextFormField(
-              cursorColor: Theme.of(context).accentColor,
-              keyboardType: TextInputType.emailAddress,
-              onSaved: (value) => _email = value,
-              decoration: InputDecoration(
-                hintText: AutofillHints.email,
-                prefixIcon: Icon(Icons.email),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.pink[200],
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.pink[700],
-                  blurRadius: 15.0, // soften the shadow
-                  spreadRadius: 0.2, //extend the shadow
-                  offset: Offset(
-                    0, // Move to right 10  horizontally
-                    8.0, // Move to bottom 10 Vertically
-                  ),
-                )
-              ],
-            ),
-            child: TextFormField(
-              cursorColor: Theme.of(context).primaryColor,
-              obscureText: true,
-              onSaved: (value) => _password = value,
-              decoration: InputDecoration(
-                hintText: AutofillHints.password,
-                prefixIcon: Icon(Icons.lock),
-                border: InputBorder.none,
-              ),
-              validator: (text) => (text.trim().length >= 8)
-                  ? null
-                  : "enter minimum 8 characters",
-            ),
+          AuthTextField(
+            controller: passwordController,
+            prefixIcon: Icon(Icons.lock),
+            hintText: AutofillHints.password,
+            obscure: true,
+            validator: (text) =>
+                (text.trim().length >= 8) ? null : "enter minimum 8 characters",
           ),
           SizedBox(
             height: 20,
@@ -119,8 +63,11 @@ Widget signUpForm(BuildContext context) {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 try {
-                  await AuthServices.emailSignUp(_email, _username, _password);
-                  Navigator.pushReplacementNamed(context, HomePage.routeName);
+                  await AuthServices.emailSignUp(
+                      this.emailController.text, this.passwordController.text);
+
+                  // Navigator.pushReplacementNamed(context, HomePage.routeName);
+                  widget.signUpCallBack();
                 } on FirebaseAuthException catch (e) {
                   String msg = e.message;
                   Scaffold.of(context)
@@ -131,6 +78,6 @@ Widget signUpForm(BuildContext context) {
           ),
         ],
       ),
-    ),
-  );
+    );
+  }
 }
