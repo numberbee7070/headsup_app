@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'serializers.g.dart';
@@ -8,8 +10,10 @@ class DiaryEntry {
   final DateTime created;
   @JsonKey(nullable: true)
   final String image;
+  @JsonKey(ignore: true)
+  File imageFile;
 
-  DiaryEntry({this.content, this.image, this.created});
+  DiaryEntry({this.content, this.image, this.created, this.imageFile});
   factory DiaryEntry.fromJson(Map<String, dynamic> json) =>
       _$DiaryEntryFromJson(json);
   Map<String, dynamic> toJson() => _$DiaryEntryToJson(this);
