@@ -2,7 +2,7 @@ import 'package:app/auth/set_profile.dart';
 import 'package:flutter/material.dart';
 
 import '../auth/services/service.dart';
-import '../model/http_exceptions.dart';
+import '../model/exceptions.dart';
 import '../ui/hamburger_menu.dart';
 import 'diary.dart';
 import 'reads.dart';

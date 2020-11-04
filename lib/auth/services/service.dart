@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
 import '../../model/http_backend.dart';
-import '../../model/http_exceptions.dart';
+import '../../model/exceptions.dart';
 import 'profile.dart';
 
 abstract class AuthServices {
@@ -17,14 +17,18 @@ abstract class AuthServices {
 
   static bool get isLoggedIn => _auth.currentUser != null;
 
-  static bool get isVerified => _auth.currentUser?.emailVerified ?? false;
+  static Future<bool> get isVerified async {
+    await _auth.currentUser.reload();
+    return _auth.currentUser?.emailVerified ?? false;
+  }
 
   static Future<String> get accessToken => _auth.currentUser.getIdToken();
 
   static Future<void> initState() async {
     await Firebase.initializeApp();
     _auth = FirebaseAuth.instance;
-    Logger.root.log(Level.CONFIG, "login status: $isLoggedIn");
+    Logger.root.log(Level.CONFIG,
+        "login status: $isLoggedIn email: ${_auth.currentUser.email}");
     // print("verfied: $isVerified");
     if (isLoggedIn) {
       await _auth.currentUser.reload();
@@ -36,10 +40,9 @@ abstract class AuthServices {
     User user = (await _auth.signInWithEmailAndPassword(
             email: email, password: password))
         .user;
-    // if (!user.emailVerified) {
-    //   throw FirebaseAuthException(
-    //       code: "email-not-verified", message: "not verified");
-    // }
+    if (!user.emailVerified) {
+      throw EmailNotVerified();
+    }
   }
 
   static Future emailSignUp(
@@ -49,7 +52,7 @@ abstract class AuthServices {
     User user = (await _auth.createUserWithEmailAndPassword(
             email: email, password: password))
         .user;
-    // await user.sendEmailVerification();
+    await user.sendEmailVerification();
   }
 
   static logout() async {
