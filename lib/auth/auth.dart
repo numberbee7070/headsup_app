@@ -56,14 +56,9 @@ class _AuthFormState extends State<AuthForm> {
                     }
                   },
                 ),
-                PhoneLoginButton(onPressed: () async {
-                  bool success = (await Navigator.pushNamed(
-                          context, PhoneAuth.routeName)) ??
-                      false;
-                  if (success) {
-                    Navigator.pushReplacementNamed(context, HomePage.routeName);
-                  }
-                }),
+                PhoneLoginButton(
+                    onPressed: () => Navigator.pushReplacementNamed(
+                        context, PhoneAuth.routeName)),
               ],
             ),
           ),

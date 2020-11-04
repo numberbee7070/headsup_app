@@ -4,6 +4,9 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../auth/auth.dart';
+import '../pages/home.dart';
+
 class PhoneAuth extends StatefulWidget {
   static String routeName = "phone_auth";
   @override
@@ -20,11 +23,13 @@ class _PhoneAuthState extends State<PhoneAuth> {
   int _secondsLeft = 30;
   TextEditingController _otpController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
+  Timer _timer;
 
   @override
   void dispose() {
     _otpController.dispose();
     _phoneController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -64,9 +69,10 @@ class _PhoneAuthState extends State<PhoneAuth> {
                     ),
                     _showBackButton
                         ? FlatButton(
-                            onPressed: () => Navigator.pop(context, false),
+                            onPressed: () => Navigator.pushReplacementNamed(
+                                context, AuthForm.routeName),
                             child: Text("Try other method"))
-                        : null,
+                        : SizedBox(),
                   ],
                 )
               : Column(
@@ -124,22 +130,20 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
-    Timer.periodic(
+    _timer = Timer.periodic(
       oneSec,
-      (Timer timer) => setState(
-        () {
-          if (_secondsLeft < 1) {
-            timer.cancel();
-            this.setState(() {
-              this._enableSubmit = true;
-            });
-          } else {
-            this.setState(() {
-              _secondsLeft -= 1;
-            });
-          }
-        },
-      ),
+      (Timer timer) {
+        if (_secondsLeft < 1) {
+          timer.cancel();
+          this.setState(() {
+            this._enableSubmit = true;
+          });
+        } else {
+          this.setState(() {
+            _secondsLeft -= 1;
+          });
+        }
+      },
     );
   }
 
@@ -151,8 +155,8 @@ class _PhoneAuthState extends State<PhoneAuth> {
     );
   }
 
-  void returnBackToLoginScreen() {
-    Navigator.pop(context, true);
+  void gotoHome() {
+    Navigator.pushReplacementNamed(context, HomePage.routeName);
   }
 
   Future signInWithCode() async {
@@ -161,7 +165,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
         smsCode: this._otpController.text);
     try {
       await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
-      returnBackToLoginScreen();
+      gotoHome();
     } on FirebaseAuthException catch (e) {
       displaySnackBar(e.message);
       print(e.message);
@@ -178,7 +182,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
         await _auth.signInWithCredential(credential);
         displaySnackBar("successfully signed in");
         print("phone: ${_auth.currentUser.phoneNumber}");
-        returnBackToLoginScreen();
+        gotoHome();
       },
       verificationFailed: (FirebaseAuthException error) {
         print("error: ${error.message}");

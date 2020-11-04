@@ -18,8 +18,11 @@ abstract class AuthServices {
   static bool get isLoggedIn => _auth.currentUser != null;
 
   static Future<bool> get isVerified async {
-    await _auth.currentUser.reload();
-    return _auth.currentUser?.emailVerified ?? false;
+    if (_auth.currentUser.email != null) {
+      await _auth.currentUser.reload();
+      return _auth.currentUser?.emailVerified ?? false;
+    }
+    return true;
   }
 
   static Future<String> get accessToken => _auth.currentUser.getIdToken();
