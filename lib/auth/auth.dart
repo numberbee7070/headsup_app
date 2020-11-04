@@ -16,52 +16,57 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   bool _register = false;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Container(
         child: SafeArea(
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Column(
-                children: <Widget>[
-                  _register ? signUpForm(context) : LoginForm(),
-                  FlatButton(
-                    child: Text(_register
-                        ? "Already Registered? Login"
-                        : "New? Sign Up"),
-                    onPressed: () =>
-                        this.setState(() => _register = !_register),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(child: Divider(endIndent: 10.0)),
-                      Text("OR"),
-                      Expanded(child: Divider(indent: 10.0)),
-                    ],
-                  ),
-                  GoogleSignInButton(
-                    onPressed: () async {
-                      try {
-                        await signInWithGoogle();
-                      } catch (e) {
-                        print("Error: ${e.toString()}");
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text("Cant login"),
-                        ));
-                      }
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: Column(
+              children: <Widget>[
+                _register ? SignUpForm() : LoginForm(),
+                FlatButton(
+                  child: Text(
+                      _register ? "Already Registered? Login" : "New? Sign Up"),
+                  onPressed: () => this.setState(() => _register = !_register),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(child: Divider(endIndent: 10.0)),
+                    Text("OR"),
+                    Expanded(child: Divider(indent: 10.0)),
+                  ],
+                ),
+                GoogleSignInButton(
+                  onPressed: () async {
+                    try {
+                      await signInWithGoogle();
                       Navigator.pushReplacementNamed(
                           context, HomePage.routeName);
-                    },
-                  ),
-                  PhoneLoginButton(
-                    onPressed: () => Navigator.pushReplacementNamed(
-                        context, PhoneAuth.routeName),
-                  ),
-                ],
-              )),
+                    } catch (e) {
+                      print("google sign in error ${e.toString()}");
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        content: Text("Cant login"),
+                      ));
+                    }
+                  },
+                ),
+                PhoneLoginButton(onPressed: () async {
+                  bool success = (await Navigator.pushNamed(
+                          context, PhoneAuth.routeName)) ??
+                      false;
+                  if (success) {
+                    Navigator.pushReplacementNamed(context, HomePage.routeName);
+                  }
+                }),
+              ],
+            ),
+          ),
         ),
       ),
     );

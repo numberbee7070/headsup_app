@@ -4,8 +4,6 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/home.dart';
-
 class PhoneAuth extends StatefulWidget {
   static String routeName = "phone_auth";
   @override
@@ -16,6 +14,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _isCodeSent = false;
   bool _enableSubmit = false;
+  bool _showBackButton = false;
   String _verificationId;
   String _countryCode = CountryCode.fromCode("IN").dialCode;
   int _secondsLeft = 30;
@@ -63,6 +62,11 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       child: Text("Verify"),
                       onPressed: _enableSubmit ? signInWithCode : null,
                     ),
+                    _showBackButton
+                        ? FlatButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text("Try other method"))
+                        : null,
                   ],
                 )
               : Column(
@@ -147,8 +151,8 @@ class _PhoneAuthState extends State<PhoneAuth> {
     );
   }
 
-  void moveToHome() {
-    Navigator.pushReplacementNamed(context, HomePage.routeName);
+  void returnBackToLoginScreen() {
+    Navigator.pop(context, true);
   }
 
   Future signInWithCode() async {
@@ -157,7 +161,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
         smsCode: this._otpController.text);
     try {
       await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
-      moveToHome();
+      returnBackToLoginScreen();
     } on FirebaseAuthException catch (e) {
       displaySnackBar(e.message);
       print(e.message);
@@ -174,7 +178,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
         await _auth.signInWithCredential(credential);
         displaySnackBar("successfully signed in");
         print("phone: ${_auth.currentUser.phoneNumber}");
-        moveToHome();
+        returnBackToLoginScreen();
       },
       verificationFailed: (FirebaseAuthException error) {
         print("error: ${error.message}");
