@@ -80,7 +80,9 @@ class _SetProfileState extends State<SetProfile> {
                     children: [
                       Text(
                           "Your Email Address is not verified please click verification link in email."),
-                      RaisedButton(onPressed: () => this.setState(() {}))
+                      RaisedButton(
+                          child: Text("recheck"),
+                          onPressed: () => this.setState(() {}))
                     ],
                   );
                 }
