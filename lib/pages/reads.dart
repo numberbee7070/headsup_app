@@ -70,7 +70,15 @@ class _ReadsState extends State<Reads> {
           {@required String title, @required String image, @required int id}) =>
       GestureDetector(
         onTap: () =>
-            Navigator.pushNamed(context, ArticlePage.routeName, arguments: id),
+            // Navigator.pushNamed(context, ArticlePage.routeName, arguments: id),
+            Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => ArticlePage(
+              articleIdx: id,
+            ),
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Container(

@@ -5,7 +5,6 @@ import 'package:logging/logging.dart';
 import 'auth/auth.dart';
 import 'auth/phone_auth.dart';
 import 'auth/services/service.dart';
-import 'pages/article.dart';
 import 'pages/diary.dart';
 import 'pages/home.dart';
 import 'welcome/welcome.dart';
@@ -71,7 +70,6 @@ class _MyAppState extends State<MyApp> {
               HomePage.routeName: (context) => HomePage(),
               PhoneAuth.routeName: (context) => PhoneAuth(),
               Diary.routeName: (context) => Diary(),
-              ArticlePage.routeName: (context) => ArticlePage(),
             },
           );
         } else {
