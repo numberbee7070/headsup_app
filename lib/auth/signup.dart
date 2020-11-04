@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/home.dart';
 import '../ui/text_fields.dart';
 import 'services/service.dart';
 
 class SignUpForm extends StatefulWidget {
-  final Function signUpCallBack;
-  SignUpForm({Key key, this.signUpCallBack}) : super(key: key);
-
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
@@ -66,8 +64,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   await AuthServices.emailSignUp(
                       this.emailController.text, this.passwordController.text);
 
-                  // Navigator.pushReplacementNamed(context, HomePage.routeName);
-                  widget.signUpCallBack();
+                  Navigator.pushReplacementNamed(context, HomePage.routeName);
                 } on FirebaseAuthException catch (e) {
                   String msg = e.message;
                   Scaffold.of(context)

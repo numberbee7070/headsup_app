@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/home.dart';
-import 'services/service.dart';
 import '../ui/text_fields.dart';
+import 'services/service.dart';
 
 class LoginForm extends StatefulWidget {
   @override

@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
+import '../../model/http_backend.dart';
+import '../../model/http_exceptions.dart';
 import 'profile.dart';
 
 abstract class AuthServices {
@@ -38,20 +40,16 @@ abstract class AuthServices {
     //   throw FirebaseAuthException(
     //       code: "email-not-verified", message: "not verified");
     // }
-    userProfile.username = user.displayName;
   }
 
   static Future emailSignUp(
     String email,
-    String username,
     String password,
   ) async {
     User user = (await _auth.createUserWithEmailAndPassword(
             email: email, password: password))
         .user;
     // await user.sendEmailVerification();
-    user.updateProfile(displayName: username);
-    newSignUp(username);
   }
 
   static logout() async {
@@ -64,7 +62,7 @@ abstract class AuthServices {
   }
 
   static newSignUp(String username) async {
-    final uri = Uri.parse("https://kyukey.tech/headsup/signup/");
+    final uri = Uri.parse(BASE_URI + "user/create/");
     final token = await accessToken;
     http.Response res;
     try {
@@ -80,5 +78,29 @@ abstract class AuthServices {
       print("Http error ${res.statusCode}: ${res.toString()}");
       throw Exception("http error");
     }
+  }
+
+  static Future fetchUserDetails() async {
+    final uri = Uri.parse(BASE_URI + "user/");
+    final headers = await authHeader;
+    http.Response res;
+
+    try {
+      res = await http.get(
+        uri,
+        headers: headers,
+      );
+    } on SocketException {
+      print("connection error");
+      rethrow;
+    }
+    print("fetch user detail: http status: ${res.statusCode}");
+    // if user does not exists
+    if (res.statusCode == 403) {
+      throw HttpForbidden();
+    }
+    final data = jsonDecode(res.body) as Map<String, dynamic>;
+    userProfile.username = data["username"];
+    return data;
   }
 }
