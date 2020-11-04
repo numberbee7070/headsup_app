@@ -17,3 +17,9 @@ class HttpServerError extends HttpException {
 class HttpUnauthorised extends HttpException {
   final int statusCode = 401;
 }
+
+class EmailNotVerified implements Exception {
+  static final String message =
+      "email not verified. please verify your email using link";
+  String toString() => message;
+}
