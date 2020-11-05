@@ -1,4 +1,5 @@
 import 'package:app/auth/set_profile.dart';
+import 'package:app/game/game.dart';
 import 'package:flutter/material.dart';
 
 import '../auth/services/service.dart';
@@ -77,7 +78,14 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => BubbleGame(
+                      title: "Bubble game",
+                    ),
+                  ),
+                ),
                 child: Icon(Icons.gamepad_rounded),
               ),
               floatingActionButtonLocation:
