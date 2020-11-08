@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import '../data.dart' as data;
 import '../model/http_backend.dart';
 import '../model/serializers.dart';
-import 'article.dart';
+import '../ui/article_card.dart';
 
 class Reads extends StatefulWidget {
   @override
@@ -14,134 +15,68 @@ class Reads extends StatefulWidget {
 }
 
 class _ReadsState extends State<Reads> {
+  Future _future;
   Size size;
+  @override
+  void initState() {
+    super.initState();
+    _future = fetchArticles();
+  }
+
   @override
   Widget build(BuildContext context) {
     this.size = MediaQuery.of(context).size;
-    return Stack(
-      children: [
-        OverflowBox(
-          minHeight: 0.0,
-          minWidth: 0.0,
-          maxHeight: double.infinity,
-          child: Image.asset("assets/images/home_bg.png"),
-        ),
-        FutureBuilder<List<Article>>(
-          future: fetchArticles(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: ListView.separated(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, idx) => contentCard(
-                      title: snapshot.data[idx].title,
-                      image: snapshot.data[idx].image,
-                      id: snapshot.data[idx].id,
-                    ),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        Divider(
-                      indent: 10.0,
-                      endIndent: 10.0,
-                      height: 20.0,
-                    ),
-                  ),
-                );
-              } else {
-                return Center(
-                  child: Text('nothing to display'),
-                );
-              }
-            } else {
-              return Shimmer.fromColors(
-                baseColor: Colors.pink[300],
-                highlightColor: Colors.pink[400],
-                child: shimmerCard(),
-              );
-            }
-          },
-        )
-      ],
+    return FutureBuilder<List<Article>>(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 0.0),
+              child: ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, idx) =>
+                    ArticleContentCard(article: snapshot.data[idx]),
+              ),
+            );
+          } else {
+            return Center(
+              child: Text('nothing to display'),
+            );
+          }
+        } else {
+          return shimmerCard();
+        }
+      },
     );
   }
 
-  Widget contentCard(
-          {@required String title, @required String image, @required int id}) =>
-      GestureDetector(
-        onTap: () =>
-            // Navigator.pushNamed(context, ArticlePage.routeName, arguments: id),
-            Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => ArticlePage(
-              articleIdx: id,
+  Widget shimmerCard() => Center(
+          child: Stack(
+        overflow: Overflow.visible,
+        children: [
+          Shimmer.fromColors(
+            baseColor: Colors.grey,
+            highlightColor: Color(0xffe0e0e0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(data.randomQuote(),
+                  style: TextStyle(fontSize: 20.0),
+                  textAlign: TextAlign.center),
             ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.white,
-            ),
-            child: Column(
-              children: [
-                Container(
-                  child: Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(image), // replace with network image
-                ),
-              ],
+          Positioned(
+            top: -80,
+            left: -40,
+            width: 100,
+            child: Transform.rotate(
+              angle: pi / 4,
+              child: Image.asset(
+                "assets/images/ishi_ldpi.png",
+                fit: BoxFit.contain,
+              ),
             ),
           ),
-        ),
-      );
-
-  Widget shimmerCard() => Padding(
-        padding: const EdgeInsets.only(top: 50.0),
-        child: Wrap(
-          children: [
-            Card(
-              child: SizedBox(
-                height: 200,
-                width: size.width,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                data.randomQuote(),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Card(
-              child: SizedBox(
-                height: 200,
-                width: size.width,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                data.randomQuote(),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Card(
-              child: SizedBox(
-                height: 200,
-                width: size.width,
-              ),
-            ),
-          ],
-        ),
-      );
+        ],
+      ));
 }

@@ -23,9 +23,8 @@ class _ArticlePageState extends State<ArticlePage>
   AnimationController _animation;
   bool _enablePlayback = false;
   double _iconSize = 50.0;
-
-  /// for controlling the size of playback controls icons when scrolling
-  StreamController<double> _iconSizeStream;
+  Image _image;
+  Size size;
 
   @override
   void initState() {
@@ -34,8 +33,10 @@ class _ArticlePageState extends State<ArticlePage>
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     player.playerStateStream.listen(playerStateListener);
     _future = fetchArticle(widget.articleIdx);
-    _future.then((Article value) => player.setUrl(value.audio));
-    _iconSizeStream = StreamController<double>();
+    _future
+      ..then((Article value) => player.setUrl(value.audio))
+      ..then((Article value) =>
+          _image = Image.network(value.image, fit: BoxFit.cover));
   }
 
   @override
@@ -46,12 +47,14 @@ class _ArticlePageState extends State<ArticlePage>
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     return Scaffold(
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollinfo) {
-          if (scrollinfo.metrics.pixels < 50)
-            _iconSizeStream
-                .add(max(30.0, 50 - 0.5 * scrollinfo.metrics.pixels));
+          if (scrollinfo.metrics.pixels <= 50)
+            this.setState(() {
+              _iconSize = max(25.0, 50 - 0.5 * scrollinfo.metrics.pixels);
+            });
           return true;
         },
         child: CustomScrollView(
@@ -60,7 +63,7 @@ class _ArticlePageState extends State<ArticlePage>
               floating: false,
               pinned: true,
               snap: false,
-              expandedHeight: 200.0,
+              expandedHeight: 0.3 * size.height,
               flexibleSpace: Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
@@ -73,10 +76,7 @@ class _ArticlePageState extends State<ArticlePage>
                             return Stack(
                               fit: StackFit.expand,
                               children: [
-                                Image.network(
-                                  snapshot.data.image,
-                                  fit: BoxFit.cover,
-                                ),
+                                _image,
                                 Container(color: Colors.black45),
                               ],
                             );
@@ -94,57 +94,53 @@ class _ArticlePageState extends State<ArticlePage>
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).padding.top),
                     child: _enablePlayback
-                        ? StreamBuilder<double>(
-                            initialData: _iconSize,
-                            stream: _iconSizeStream.stream,
-                            builder: (context, snapshot) => Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                    iconSize: snapshot.data,
-                                    icon: Icon(
-                                      Icons.replay_10,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      var newpos = player.position +
-                                          Duration(seconds: -10);
-                                      player.seek(newpos.isNegative
-                                          ? Duration.zero
-                                          : newpos);
-                                    }),
-                                IconButton(
-                                    iconSize: snapshot.data,
-                                    icon: AnimatedIcon(
-                                      icon: AnimatedIcons.play_pause,
-                                      progress: _animation,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      if (player.playing) {
-                                        player.pause();
-                                        _animation.reverse();
-                                      } else {
-                                        player.play();
-                                        _animation.forward();
-                                      }
-                                    }),
-                                IconButton(
-                                  iconSize: snapshot.data,
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  iconSize: _iconSize,
                                   icon: Icon(
-                                    Icons.forward_10,
+                                    Icons.replay_10,
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    var newpos =
-                                        player.position + Duration(seconds: 10);
-                                    player.seek(newpos > player.duration
-                                        ? player.duration
+                                    var newpos = player.position +
+                                        Duration(seconds: -10);
+                                    player.seek(newpos.isNegative
+                                        ? Duration.zero
                                         : newpos);
-                                  },
-                                )
-                              ],
-                            ),
+                                  }),
+                              IconButton(
+                                  iconSize: _iconSize,
+                                  icon: AnimatedIcon(
+                                    icon: AnimatedIcons.play_pause,
+                                    progress: _animation,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    if (player.playing) {
+                                      player.pause();
+                                      _animation.reverse();
+                                    } else {
+                                      player.play();
+                                      _animation.forward();
+                                    }
+                                  }),
+                              IconButton(
+                                iconSize: _iconSize,
+                                icon: Icon(
+                                  Icons.forward_10,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  var newpos =
+                                      player.position + Duration(seconds: 10);
+                                  player.seek(newpos > player.duration
+                                      ? player.duration
+                                      : newpos);
+                                },
+                              )
+                            ],
                           )
                         : CircularProgressIndicator(
                             valueColor:
