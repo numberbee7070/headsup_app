@@ -64,39 +64,7 @@ class _HomePageState extends State<HomePage>
                       return Text(titles[0]);
                   }),
             ),
-            drawer: Drawer(
-              child: ListView(
-                children: [
-                  DrawerHeader(
-                    child: Column(
-                      children: [
-                        Card(
-                          elevation: 2.0,
-                          shape: CircleBorder(),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ConstrainedBox(
-                                constraints: BoxConstraints.tightFor(
-                                    height: 80.0, width: 80.0),
-                                child:
-                                    Image.asset("assets/images/ishi_ldpi.png")),
-                          ),
-                        ),
-                        Text(AuthServices.userProfile.username),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    title: Text("Logout"),
-                    onTap: () {
-                      AuthServices.logout();
-                      Navigator.pushReplacementNamed(
-                          context, AuthForm.routeName);
-                    },
-                  ),
-                ],
-              ),
-            ),
+            drawer: _drawer(),
             extendBody: true,
             body: snapshot.hasError
                 ? errorWidget()
@@ -169,6 +137,38 @@ class _HomePageState extends State<HomePage>
               ),
             ],
           ),
+        ),
+      );
+
+  Widget _drawer() => Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Column(
+                children: [
+                  Card(
+                    elevation: 2.0,
+                    shape: CircleBorder(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ConstrainedBox(
+                          constraints: BoxConstraints.tightFor(
+                              height: 80.0, width: 80.0),
+                          child: Image.asset("assets/images/ishi_ldpi.png")),
+                    ),
+                  ),
+                  Text(AuthServices.userProfile.username),
+                ],
+              ),
+            ),
+            ListTile(
+              title: Text("Logout"),
+              onTap: () {
+                AuthServices.logout();
+                Navigator.pushReplacementNamed(context, AuthForm.routeName);
+              },
+            ),
+          ],
         ),
       );
 }
