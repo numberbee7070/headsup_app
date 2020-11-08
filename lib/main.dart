@@ -56,7 +56,8 @@ class _MyAppState extends State<MyApp> {
               CountryLocalizations.delegate,
             ],
             theme: ThemeData(
-              primarySwatch: Colors.pink,
+              primaryColor: Color(0xfff14f86),
+              accentColor: Colors.pinkAccent,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               fontFamily: 'Helvetica',
             ),
