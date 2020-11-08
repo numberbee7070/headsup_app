@@ -25,7 +25,7 @@ abstract class AuthServices {
     return true;
   }
 
-  static Future<String> get accessToken => _auth.currentUser.getIdToken();
+  static Future<String> get accessToken => _auth.currentUser?.getIdToken();
 
   static Future<void> initState() async {
     await Firebase.initializeApp();
