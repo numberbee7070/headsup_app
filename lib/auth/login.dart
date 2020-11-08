@@ -14,6 +14,7 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  Size size;
 
   @override
   void dispose() {
@@ -24,28 +25,23 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset("assets/images/login_page.png"),
-          Text(
-            "Heads Up",
-            style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).accentColor),
-          ),
+          Image.asset("assets/images/logo.png"),
           AuthTextField(
             controller: emailController,
             prefixIcon: Icon(Icons.perm_identity),
             hintText: AutofillHints.email,
           ),
-          SizedBox(
-            height: 20,
-          ),
+          // SizedBox(
+          //   height: 0.015 * size.height,
+          // ),
           AuthTextField(
             controller: passwordController,
             prefixIcon: Icon(Icons.lock),
@@ -53,12 +49,12 @@ class _LoginFormState extends State<LoginForm> {
             obscure: true,
           ),
           SizedBox(
-            height: 20,
+            height: 0.015 * size.height,
           ),
           RaisedButton(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            color: Colors.pink[200],
+            color: Theme.of(context).accentColor,
             child: Text(
               "LOGIN",
               style: TextStyle(color: Colors.white),

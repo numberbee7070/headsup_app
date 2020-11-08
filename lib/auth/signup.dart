@@ -11,6 +11,7 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  Size size;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -24,10 +25,11 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AuthTextField(
@@ -36,7 +38,7 @@ class _SignUpFormState extends State<SignUpForm> {
             prefixIcon: Icon(Icons.account_circle),
           ),
           SizedBox(
-            height: 20,
+            height: 0.015 * size.height,
           ),
           AuthTextField(
             controller: passwordController,
@@ -47,12 +49,12 @@ class _SignUpFormState extends State<SignUpForm> {
                 (text.trim().length >= 8) ? null : "enter minimum 8 characters",
           ),
           SizedBox(
-            height: 20,
+            height: 0.015 * size.height,
           ),
           RaisedButton(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            color: Colors.pink[200],
+            color: Theme.of(context).accentColor,
             child: Text(
               "SIGN UP",
               style: TextStyle(color: Colors.white),
