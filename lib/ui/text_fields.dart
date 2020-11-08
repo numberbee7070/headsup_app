@@ -17,22 +17,8 @@ class AuthTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 15.0, // soften the shadow
-            spreadRadius: 0.2, //extend the shadow
-            offset: Offset(
-              0, // Move to right 10  horizontally
-              8.0, // Move to bottom 10 Vertically
-            ),
-          )
-        ],
-      ),
+    return Card(
+      elevation: 2.0,
       child: TextFormField(
         validator: this.validator,
         controller: controller,
