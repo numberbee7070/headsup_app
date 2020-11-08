@@ -9,7 +9,6 @@ import '../model/http_backend.dart';
 import '../model/serializers.dart';
 
 class ArticlePage extends StatefulWidget {
-  static String routeName = "article";
   final int articleIdx;
   ArticlePage({@required this.articleIdx});
   @override
@@ -24,6 +23,8 @@ class _ArticlePageState extends State<ArticlePage>
   AnimationController _animation;
   bool _enablePlayback = false;
   double _iconSize = 50.0;
+
+  /// for controlling the size of playback controls icons when scrolling
   StreamController<double> _iconSizeStream;
 
   @override
@@ -32,8 +33,8 @@ class _ArticlePageState extends State<ArticlePage>
     _animation =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     player.playerStateStream.listen(playerStateListener);
-    _future = getArticle(widget.articleIdx);
-    _future.then((Article value) => initialiseAudio(value.audio));
+    _future = fetchArticle(widget.articleIdx);
+    _future.then((Article value) => player.setUrl(value.audio));
     _iconSizeStream = StreamController<double>();
   }
 
@@ -80,7 +81,8 @@ class _ArticlePageState extends State<ArticlePage>
                               ],
                             );
                           } else {
-                            return Text("Error occured");
+                            return Center(
+                                child: Text("Error occured try again later"));
                           }
                         } else {
                           return Container();
@@ -209,10 +211,7 @@ class _ArticlePageState extends State<ArticlePage>
                         return Text("Error occured");
                       }
                     } else {
-                      return Shimmer.fromColors(
-                          child: shimmerWidget,
-                          baseColor: Colors.grey,
-                          highlightColor: Colors.white60);
+                      return shimmerWidget;
                     }
                   },
                 ),
@@ -222,15 +221,6 @@ class _ArticlePageState extends State<ArticlePage>
         ),
       ),
     );
-  }
-
-  Future<Article> getArticle(int idx) async {
-    // await Future.delayed(Duration(minutes: 5));
-    return await fetchArticle(idx);
-  }
-
-  Future initialiseAudio(String url) async {
-    await player.setUrl(url);
   }
 
   void playerStateListener(PlayerState state) {
@@ -261,31 +251,34 @@ class _ArticlePageState extends State<ArticlePage>
     this.setState(() {});
   }
 
-  Widget shimmerWidget = Padding(
-    padding: EdgeInsets.all(20.0),
-    child: Column(
-      children: [
-        Card(
-          child: SizedBox(
-            height: 20.0,
-            width: 250.0,
-          ),
+  Widget shimmerWidget = Shimmer.fromColors(
+      baseColor: Colors.grey,
+      highlightColor: Colors.white60,
+      child: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Card(
+              child: SizedBox(
+                height: 20.0,
+                width: 250.0,
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Card(
+              child: SizedBox(
+                height: 15.0,
+                width: 250.0,
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Card(
+              child: SizedBox(
+                height: 15.0,
+                width: 250.0,
+              ),
+            ),
+          ],
         ),
-        SizedBox(height: 20.0),
-        Card(
-          child: SizedBox(
-            height: 15.0,
-            width: 250.0,
-          ),
-        ),
-        SizedBox(height: 20.0),
-        Card(
-          child: SizedBox(
-            height: 15.0,
-            width: 250.0,
-          ),
-        ),
-      ],
-    ),
-  );
+      ));
 }
