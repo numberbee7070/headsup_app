@@ -1,10 +1,12 @@
-import 'package:app/auth/set_profile.dart';
-import 'package:app/game/game.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../auth/auth.dart';
 import '../auth/services/service.dart';
+import '../auth/set_profile.dart';
+import '../game/game.dart';
 import '../model/exceptions.dart';
-import '../ui/hamburger_menu.dart';
 import 'diary.dart';
 import 'reads.dart';
 
@@ -14,13 +16,28 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
   Future _future;
+  StreamController<int> _tabEventStream;
+
+  List<String> titles = ['Reads', 'Diary'];
 
   @override
   void initState() {
+    _tabEventStream = StreamController<int>();
+    _tabController = TabController(length: 2, vsync: this);
+
     super.initState();
     _future = loadUser();
+    _tabController.addListener(() => _tabEventStream.add(_tabController.index));
+    _tabController.animateTo(0);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -36,61 +53,94 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasError) {
             print("homepage: ${snapshot.error}");
           }
-          return DefaultTabController(
-            length: 2,
-            child: Scaffold(
-              extendBody: true,
-              body: SafeArea(
-                bottom: false,
-                child: Stack(
-                  children: [
-                    snapshot.hasError
-                        ? errorWidget()
-                        : TabBarView(
-                            children: [
-                              Reads(),
-                              Diary(),
-                            ],
+          return Scaffold(
+            appBar: AppBar(
+              title: StreamBuilder(
+                  stream: _tabEventStream.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData)
+                      return Text(titles[snapshot.data]);
+                    else
+                      return Text(titles[0]);
+                  }),
+            ),
+            drawer: Drawer(
+              child: ListView(
+                children: [
+                  DrawerHeader(
+                    child: Column(
+                      children: [
+                        Card(
+                          elevation: 2.0,
+                          shape: CircleBorder(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: ConstrainedBox(
+                                constraints: BoxConstraints.tightFor(
+                                    height: 80.0, width: 80.0),
+                                child:
+                                    Image.asset("assets/images/ishi_ldpi.png")),
                           ),
-                    HamburgerMenu(),
-                  ],
-                ),
-              ),
-              bottomNavigationBar: BottomAppBar(
-                shape: CircularNotchedRectangle(),
-                child: TabBar(
-                  labelColor: Colors.green,
-                  unselectedLabelColor: Colors.red,
-                  tabs: [
-                    Tab(
-                      icon: Icon(
-                        Icons.book,
-                        // color: Colors.red,
-                      ),
-                    ),
-                    Tab(
-                      icon: Icon(
-                        Icons.bookmark,
-                        // color: Colors.red,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => BubbleGame(
-                      title: "Bubble game",
+                        ),
+                        Text(AuthServices.userProfile.username),
+                      ],
                     ),
                   ),
-                ),
-                child: Icon(Icons.gamepad_rounded),
+                  ListTile(
+                    title: Text("Logout"),
+                    onTap: () {
+                      AuthServices.logout();
+                      Navigator.pushReplacementNamed(
+                          context, AuthForm.routeName);
+                    },
+                  ),
+                ],
               ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
             ),
+            extendBody: true,
+            body: snapshot.hasError
+                ? errorWidget()
+                : TabBarView(
+                    controller: _tabController,
+                    children: [
+                      Reads(),
+                      Diary(),
+                    ],
+                  ),
+            bottomNavigationBar: BottomAppBar(
+              shape: CircularNotchedRectangle(),
+              child: TabBar(
+                controller: _tabController,
+                labelColor: Colors.blue,
+                tabs: [
+                  Tab(
+                    icon: Icon(
+                      Icons.book,
+                      // color: Colors.red,
+                    ),
+                  ),
+                  Tab(
+                    icon: Icon(
+                      Icons.bookmark,
+                      // color: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => BubbleGame(
+                    title: "Bubble game",
+                  ),
+                ),
+              ),
+              child: Icon(Icons.gamepad_rounded),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
           );
         });
   }
