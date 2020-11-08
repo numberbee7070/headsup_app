@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,18 +37,6 @@ class _DiaryState extends State<Diary> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
-              child: Text(
-                "Diary",
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-            ),
-          ),
-          Container(
             decoration: _image != null
                 ? BoxDecoration(
                     image: DecorationImage(
@@ -56,22 +45,21 @@ class _DiaryState extends State<Diary> {
                     ),
                   )
                 : BoxDecoration(color: Colors.blueAccent),
-            child: Padding(
-              padding: EdgeInsets.all(15.0),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
               child: Column(
                 children: [
-                  FlatButton(
-                    onPressed: selectImage,
-                    child: Text(
-                      "choose image",
-                      style: TextStyle(color: Colors.white),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: FlatButton(
+                      onPressed: selectImage,
+                      child: Icon(Icons.add_photo_alternate),
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      color: Colors.white60,
-                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border(top: BorderSide()),
                     ),
                     child: TextField(
                       controller: textController,
@@ -79,28 +67,19 @@ class _DiaryState extends State<Diary> {
                         border: InputBorder.none,
                         hintText: "Enter message",
                       ),
-                      minLines: 1,
-                      maxLines: 5,
                     ),
                   ),
-                  RaisedButton(
-                    onPressed: () {
-                      print(textController.text);
-                      if (textController.text.trim() == "") {
-                        return;
-                      }
-                      this.setState(() {
-                        this.items.insert(
-                            0,
-                            DiaryEntry(
-                              content: textController.text.trim(),
-                              created: DateTime.now(),
-                              imageFile: this._image,
-                            ));
-                      });
-                      createDiaryEntry(this.items[0], this._image);
-                    },
-                    child: Text("Add"),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: RaisedButton(
+                      color: Theme.of(context).primaryColor,
+                      onPressed: insertDiary,
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                      ),
+                      shape: CircleBorder(),
+                    ),
                   )
                 ],
               ),
@@ -132,6 +111,22 @@ class _DiaryState extends State<Diary> {
         ],
       ),
     );
+  }
+
+  void insertDiary() {
+    if (textController.text.trim() == "") {
+      return;
+    }
+    this.setState(() {
+      this.items.insert(
+          0,
+          DiaryEntry(
+            content: textController.text.trim(),
+            created: DateTime.now(),
+            imageFile: this._image,
+          ));
+    });
+    createDiaryEntry(this.items[0], this._image);
   }
 
   final picker = ImagePicker();
