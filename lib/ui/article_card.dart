@@ -47,6 +47,7 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Card(
+              clipBehavior: Clip.hardEdge,
               child: Column(
                 children: [
                   Stack(
