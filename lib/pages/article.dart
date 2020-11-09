@@ -249,7 +249,7 @@ class _ArticlePageState extends State<ArticlePage>
 
   Widget shimmerWidget = Shimmer.fromColors(
       baseColor: Colors.grey,
-      highlightColor: Colors.white60,
+      highlightColor: Color(0xffe0e0e0),
       child: Padding(
         padding: EdgeInsets.all(20.0),
         child: Column(
