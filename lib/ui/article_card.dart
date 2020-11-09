@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../auth/services/service.dart';
 import '../model/serializers.dart';
 import '../pages/article.dart';
+import '../model/http_backend.dart';
 
 class ArticleContentCard extends StatefulWidget {
   final Article article;
@@ -15,6 +17,7 @@ class ArticleContentCard extends StatefulWidget {
 class _ArticleContentCardState extends State<ArticleContentCard> {
   bool _visible = false;
   Image _image;
+  bool _favourite;
 
   @override
   void initState() {
@@ -27,6 +30,8 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
         }
       },
     ));
+    _favourite =
+        AuthServices.userProfile.favouriteArticles.contains(widget.article.id);
   }
 
   @override
@@ -65,15 +70,45 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
                                       color: Colors.white, size: 40.0)))),
                     ],
                   ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        widget.article.title,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20.0),
+                  Row(
+                    children: [
+                      IconButton(
+                        color: _favourite
+                            ? Theme.of(context).accentColor
+                            : Colors.black,
+                        icon: Icon(Icons.emoji_emotions_outlined),
+                        onPressed: () async {
+                          this.setState(() {
+                            _favourite = !_favourite;
+                          });
+                          try {
+                            if (_favourite) {
+                              await addArticleFavourite(widget.article.id);
+                              AuthServices.userProfile.favouriteArticles
+                                  .remove(widget.article.id);
+                            } else {
+                              await removeArticleFavourite(widget.article.id);
+                              AuthServices.userProfile.favouriteArticles
+                                  .add(widget.article.id);
+                            }
+                          } catch (e) {
+                            print(e);
+                            this.setState(() {
+                              _favourite = !_favourite;
+                            });
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text("can not perform operation.")));
+                          }
+                        },
                       ),
-                    ),
+                      Expanded(
+                        child: Text(
+                          widget.article.title,
+                          style: TextStyle(fontSize: 20.0),
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

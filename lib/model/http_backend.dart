@@ -79,3 +79,27 @@ Future<Article> fetchArticle(int idx) async {
     rethrow;
   }
 }
+
+Future addArticleFavourite(int idx) async {
+  try {
+    http.Response res = await http.put(BASE_URI + "favourite/$idx",
+        headers: await AuthServices.authHeader);
+    Map data = jsonDecode(res.body) as Map;
+    return Article.fromJson(data);
+  } catch (e) {
+    print(e);
+    rethrow;
+  }
+}
+
+Future removeArticleFavourite(int idx) async {
+  try {
+    http.Response res = await http.delete(BASE_URI + "favourite/$idx",
+        headers: await AuthServices.authHeader);
+    Map data = jsonDecode(res.body) as Map;
+    return Article.fromJson(data);
+  } catch (e) {
+    print(e);
+    rethrow;
+  }
+}
