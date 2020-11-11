@@ -107,7 +107,7 @@ abstract class AuthServices {
     }
     final data = jsonDecode(res.body) as Map<String, dynamic>;
     userProfile.username = data["username"];
-    userProfile.favouriteArticles = List<int>.from(data["favourites"]);
+    userProfile.favouriteArticles = Set<int>.from(data["favourites"]);
     return data;
   }
 }

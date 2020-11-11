@@ -1,5 +1,5 @@
 class UserProfile {
   String name;
   String username;
-  List<int> favouriteArticles;
+  Set<int> favouriteArticles;
 }
