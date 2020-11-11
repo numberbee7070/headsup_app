@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../data.dart' as data;
+import '../utils/quote_data.dart' as data;
 import '../model/http_backend.dart';
 import '../model/serializers.dart';
 import '../ui/article_card.dart';
