@@ -85,11 +85,11 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
                             if (_favourite) {
                               await addArticleFavourite(widget.article.id);
                               AuthServices.userProfile.favouriteArticles
-                                  .remove(widget.article.id);
+                                  .add(widget.article.id);
                             } else {
                               await removeArticleFavourite(widget.article.id);
                               AuthServices.userProfile.favouriteArticles
-                                  .add(widget.article.id);
+                                  .remove(widget.article.id);
                             }
                           } catch (e) {
                             print(e);
