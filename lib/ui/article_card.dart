@@ -1,23 +1,22 @@
+import 'package:app/ui/fav_button.dart';
 import 'package:flutter/material.dart';
 
-import '../auth/services/service.dart';
 import '../model/serializers.dart';
 import '../pages/article.dart';
-import '../model/http_backend.dart';
 
 class ArticleContentCard extends StatefulWidget {
   final Article article;
 
-  ArticleContentCard({@required this.article});
+  ArticleContentCard({Key key, @required this.article}) : super(key: key);
 
   @override
   _ArticleContentCardState createState() => _ArticleContentCardState();
 }
 
 class _ArticleContentCardState extends State<ArticleContentCard> {
+  final GlobalKey<SmileFavButtonState> _key = GlobalKey();
   bool _visible = false;
   Image _image;
-  bool _favourite;
 
   @override
   void initState() {
@@ -30,8 +29,6 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
         }
       },
     ));
-    _favourite =
-        AuthServices.userProfile.favouriteArticles.contains(widget.article.id);
   }
 
   @override
@@ -42,13 +39,15 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
       child: AbsorbPointer(
         absorbing: !_visible,
         child: GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  ArticlePage(articleIdx: widget.article.id),
-            ),
-          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    ArticlePage(articleIdx: widget.article.id),
+              ),
+            ).then((_) => _key.currentState.loadState());
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Card(
@@ -63,44 +62,22 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
                             widget.article.image), // replace with network image
                       ),
                       Positioned.fill(
-                          child: Container(
-                              color: Colors.black38,
-                              child: Center(
-                                  child: Icon(Icons.play_circle_outline_rounded,
-                                      color: Colors.white, size: 40.0)))),
+                        child: Container(
+                          color: Colors.black38,
+                          child: Center(
+                            child: Icon(
+                              Icons.play_circle_outline_rounded,
+                              color: Colors.white,
+                              size: 40.0,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   Row(
                     children: [
-                      IconButton(
-                        color: _favourite
-                            ? Theme.of(context).accentColor
-                            : Colors.black,
-                        icon: Icon(Icons.emoji_emotions_outlined),
-                        onPressed: () async {
-                          this.setState(() {
-                            _favourite = !_favourite;
-                          });
-                          try {
-                            if (_favourite) {
-                              await addArticleFavourite(widget.article.id);
-                              AuthServices.userProfile.favouriteArticles
-                                  .add(widget.article.id);
-                            } else {
-                              await removeArticleFavourite(widget.article.id);
-                              AuthServices.userProfile.favouriteArticles
-                                  .remove(widget.article.id);
-                            }
-                          } catch (e) {
-                            print(e);
-                            this.setState(() {
-                              _favourite = !_favourite;
-                            });
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text("can not perform operation.")));
-                          }
-                        },
-                      ),
+                      SmileFavButton(key: _key, article: widget.article),
                       Expanded(
                         child: Text(
                           widget.article.title,

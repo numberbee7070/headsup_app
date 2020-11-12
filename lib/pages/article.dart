@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app/ui/fav_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -10,7 +12,7 @@ import '../model/serializers.dart';
 
 class ArticlePage extends StatefulWidget {
   final int articleIdx;
-  ArticlePage({@required this.articleIdx});
+  ArticlePage({Key key, @required this.articleIdx}) : super(key: key);
   @override
   _ArticlePageState createState() => _ArticlePageState();
 }
@@ -22,6 +24,7 @@ class _ArticlePageState extends State<ArticlePage>
   final player = AudioPlayer();
   AnimationController _animation;
   bool _enablePlayback = false;
+  bool _smileVisibility = false;
   double _iconSize = 50.0;
   Image _image;
   Size size;
@@ -33,15 +36,19 @@ class _ArticlePageState extends State<ArticlePage>
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     player.playerStateStream.listen(playerStateListener);
     _future = fetchArticle(widget.articleIdx);
-    _future
-      ..then((Article value) => player.setUrl(value.audio))
-      ..then((Article value) =>
-          _image = Image.network(value.image, fit: BoxFit.cover));
+    _future.then((Article value) {
+      player.setUrl(value.audio);
+      _image = Image.network(value.image, fit: BoxFit.cover);
+      _smileVisibility = true;
+      this.setState(() {});
+    });
+    SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   @override
   void dispose() {
     player.dispose().then((_) => _animation.dispose());
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     super.dispose();
   }
 
@@ -54,6 +61,11 @@ class _ArticlePageState extends State<ArticlePage>
           if (scrollinfo.metrics.pixels <= 50)
             this.setState(() {
               _iconSize = max(25.0, 50 - 0.5 * scrollinfo.metrics.pixels);
+              _smileVisibility = true;
+            });
+          if (scrollinfo.metrics.pixels > 50 && _smileVisibility)
+            this.setState(() {
+              _smileVisibility = false;
             });
           return true;
         },
@@ -158,7 +170,20 @@ class _ArticlePageState extends State<ArticlePage>
                             "${position.toString().split('.')[0]} | ${player.duration.toString().split('.')[0]}");
                       },
                     ),
-                  )
+                  ),
+                  Positioned(
+                      left: 12.0,
+                      bottom: 12.0,
+                      child: FutureBuilder<Article>(
+                        future: _future,
+                        builder: (context, snapshot) => snapshot.hasData
+                            ? Visibility(
+                                child: SmileFavButton(article: snapshot.data),
+                                maintainState: true,
+                                visible: _smileVisibility && !snapshot.hasError,
+                              )
+                            : SizedBox(),
+                      ))
                 ],
               ),
             ),
