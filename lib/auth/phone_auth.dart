@@ -47,6 +47,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
           child: _isCodeSent
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
                       _enableSubmit
@@ -59,24 +60,27 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       hintText: AutofillHints.oneTimeCode,
                       prefixIcon: null,
                     ),
-                    FlatButton(
-                      color: Colors.redAccent,
-                      textColor: Colors.white,
-                      child: Text("Verify"),
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      color: Theme.of(context).accentColor,
+                      child: Text("Verify",style: TextStyle(color: Colors.white),),
                       onPressed: _enableSubmit ? signInWithCode : null,
                     ),
                     _showBackButton
-                        ? FlatButton(
+                        ? RaisedButton(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      color: Theme.of(context).accentColor,
                             onPressed: () => Navigator.pushReplacementNamed(
                                 context, AuthForm.routeName),
-                            child: Text("Try other method"))
+                            child: Text("Try other method",style: TextStyle(color: Colors.white),))
                         : SizedBox(),
                   ],
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Stack(
+                    Align(alignment:Alignment.center, child: Stack(
                       alignment: AlignmentDirectional.centerEnd,
                       children: [
                         Icon(Icons.arrow_drop_down),
@@ -98,7 +102,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                           alignLeft: false,
                         ),
                       ],
-                    ),
+                    )),
                     SizedBox(height: 20.0),
                     AuthTextField(
                       controller: _phoneController,
@@ -108,10 +112,10 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       ),
                       hintText: AutofillHints.telephoneNumber,
                     ),
-                    FlatButton(
-                      color: Colors.redAccent,
-                      textColor: Colors.white,
-                      child: Text("SEND OTP"),
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      color: Theme.of(context).accentColor,
+                      child: Text("LOGIN",style: TextStyle(color: Colors.white),),
                       onPressed: phoneAuth,
                     ),
                   ],

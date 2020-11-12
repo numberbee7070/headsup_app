@@ -172,8 +172,8 @@ class _ArticlePageState extends State<ArticlePage>
                     ),
                   ),
                   Positioned(
-                      left: 12.0,
-                      bottom: 12.0,
+                      left: 0.0,
+                      bottom: 0.0,
                       child: FutureBuilder<Article>(
                         future: _future,
                         builder: (context, snapshot) => snapshot.hasData

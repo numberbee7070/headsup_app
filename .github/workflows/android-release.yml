@@ -14,11 +14,12 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         channel: stable
+    - name: build-apk
+      run: echo $KEY_JKS | base64 -d > android/key.jks && flutter pub get && flutter build apk --release --split-per-abi
       env:
         KEY_JKS: ${{ secrets.KEY_JKS }}
         ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: echo $KEY_JKS | base64 -d > android/key.jks && flutter pub get && flutter build apk --release --split-per-abi
     - name: upload artifacts
       uses: actions/upload-artifact@v2
       with:

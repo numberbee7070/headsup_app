@@ -37,9 +37,6 @@ class _SignUpFormState extends State<SignUpForm> {
             hintText: AutofillHints.email,
             prefixIcon: Icon(Icons.account_circle),
           ),
-          SizedBox(
-            height: 0.015 * size.height,
-          ),
           AuthTextField(
             controller: passwordController,
             prefixIcon: Icon(Icons.lock),
