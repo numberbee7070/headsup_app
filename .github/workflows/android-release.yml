@@ -16,11 +16,9 @@ jobs:
         channel: stable
       env:
         KEY_JKS: ${{ secrets.KEY_JKS }}
-        KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
-        ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-    - run: echo $KEY_JKS | base64 -d > android/key.jks
-    - run: flutter pub get
-    - run: flutter build apk --release --split-per-abi
+        ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: echo $KEY_JKS | base64 -d > android/key.jks && flutter pub get && flutter build apk --release --split-per-abi
     - name: upload artifacts
       uses: actions/upload-artifact@v2
       with:
