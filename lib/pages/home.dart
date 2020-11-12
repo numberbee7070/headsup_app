@@ -26,13 +26,12 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    _tabEventStream = StreamController<int>();
+    _tabEventStream = StreamController<int>.broadcast();
     _tabController = TabController(length: 2, vsync: this);
 
     super.initState();
     _future = loadUser();
     _tabController.addListener(() => _tabEventStream.add(_tabController.index));
-    _tabController.animateTo(0);
   }
 
   @override
@@ -55,7 +54,8 @@ class _HomePageState extends State<HomePage>
           }
           return Scaffold(
             appBar: AppBar(
-              title: StreamBuilder(
+              title: StreamBuilder<int>(
+                  initialData: 0,
                   stream: _tabEventStream.stream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData)
@@ -77,23 +77,29 @@ class _HomePageState extends State<HomePage>
                   ),
             bottomNavigationBar: BottomAppBar(
               shape: CircularNotchedRectangle(),
-              child: TabBar(
-                controller: _tabController,
-                labelColor: Colors.blue,
-                tabs: [
-                  Tab(
-                    icon: Icon(
-                      Icons.book,
-                      // color: Colors.red,
+              child: StreamBuilder<int>(
+                initialData: 0,
+                stream: _tabEventStream.stream,
+                builder: (context, snapshot) => TabBar(
+                  controller: _tabController,
+                  labelColor: Colors.blue,
+                  tabs: [
+                    Tab(
+                      icon: Icon(
+                        snapshot.data == 0 ? Icons.book : Icons.book_outlined,
+                        // color: Colors.red,
+                      ),
                     ),
-                  ),
-                  Tab(
-                    icon: Icon(
-                      Icons.bookmark,
-                      // color: Colors.red,
+                    Tab(
+                      icon: Icon(
+                        snapshot.data == 1
+                            ? Icons.bookmark
+                            : Icons.bookmark_outline,
+                        // color: Colors.red,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             floatingActionButton: FloatingActionButton(
@@ -151,10 +157,11 @@ class _HomePageState extends State<HomePage>
                     shape: CircleBorder(),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: ConstrainedBox(
-                          constraints: BoxConstraints.tightFor(
-                              height: 80.0, width: 80.0),
-                          child: Image.asset("assets/images/ishi_ldpi.png")),
+                      child: Image.asset(
+                        "assets/images/ishi_ldpi.png",
+                        height: 80.0,
+                        width: 80.0,
+                      ),
                     ),
                   ),
                   Text(AuthServices.userProfile.username),
