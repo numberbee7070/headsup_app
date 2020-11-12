@@ -7,6 +7,7 @@ import 'package:mime/mime.dart';
 
 import '../auth/services/service.dart';
 import '../model/serializers.dart';
+import '../utils/diary_grouping.dart';
 
 const BASE_URI = "https://mentalheadsup.com/api/";
 
@@ -41,14 +42,14 @@ Future<Map<String, dynamic>> createDiaryEntry(
   }
 }
 
-Future<List<DiaryEntry>> fetchDiaryEntries() async {
+Future<Map<String, List<DiaryEntry>>> fetchDiaryEntries() async {
   try {
     http.Response res = await http.get(BASE_URI + "diary/",
         headers: await AuthServices.authHeader);
     List l = jsonDecode(res.body) as List;
     List<DiaryEntry> diaries =
         l.map((obj) => DiaryEntry.fromJson(obj)).toList();
-    return diaries;
+    return groupDiaryByDate(diaries);
   } catch (e) {
     print(e);
     rethrow;

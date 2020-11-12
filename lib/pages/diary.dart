@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:app/ui/diary_list_element.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -16,7 +17,7 @@ class Diary extends StatefulWidget {
 class _DiaryState extends State<Diary> {
   File _image;
   Future _future;
-  List<DiaryEntry> items;
+  Map<String, List<DiaryEntry>> items;
   TextEditingController textController = TextEditingController();
   @override
   void initState() {
@@ -51,20 +52,22 @@ class _DiaryState extends State<Diary> {
                 children: [
                   Align(
                     alignment: Alignment.centerRight,
-                    child: FlatButton(
+                    child: RaisedButton(
                       onPressed: selectImage,
-                      child: Icon(Icons.add_photo_alternate),
+                      color: Theme.of(context).primaryColor,
+                      shape: CircleBorder(),
+                      child: Icon(
+                        Icons.add_photo_alternate,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      border: Border(top: BorderSide()),
-                    ),
                     child: TextField(
                       controller: textController,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
+                        isDense: true,
                         hintText: "Enter message",
                       ),
                     ),
@@ -94,13 +97,11 @@ class _DiaryState extends State<Diary> {
                 } else {
                   return ListView.builder(
                     itemCount: items.length,
-                    itemBuilder: (context, idx) => Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ListTile(
-                        title: Text(items[idx].content),
-                        leading: items[idx].image != null
-                            ? Image.network(items[idx].image)
-                            : Image.file(items[idx].imageFile),
+                    itemBuilder: (BuildContext context, int idx) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DiaryListElement(
+                        date: items.keys.elementAt(idx),
+                        diaries: items.values.elementAt(idx),
                       ),
                     ),
                   );
@@ -118,7 +119,9 @@ class _DiaryState extends State<Diary> {
       return;
     }
     this.setState(() {
-      this.items.insert(
+      if (!items.containsKey('Today')) items['Today'] = List<DiaryEntry>();
+
+      items['Today'].insert(
           0,
           DiaryEntry(
             content: textController.text.trim(),
@@ -126,7 +129,8 @@ class _DiaryState extends State<Diary> {
             imageFile: this._image,
           ));
     });
-    createDiaryEntry(this.items[0], this._image);
+
+    createDiaryEntry(this.items['Today'][0], this._image);
   }
 
   final picker = ImagePicker();

@@ -33,6 +33,7 @@ dependencies:
   mime: ^0.9.7
   flutter_auth_buttons: ^0.10.0
   just_audio: ^0.5.5
+  intl: ^0.16.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
