@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/ui/text_fields.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -49,17 +50,14 @@ class _PhoneAuthState extends State<PhoneAuth> {
                   children: [
                     Text(
                       _enableSubmit
-                          ? "Enter OTP"
+                          ? "Get OTP"
                           : "Wating for OTP 00:${_secondsLeft.toString().padLeft(2, '0')}",
                     ),
                     SizedBox(height: 20.0),
-                    TextField(
+                    AuthTextField(
                       controller: _otpController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: 'Enter OTP',
-                        border: OutlineInputBorder(),
-                      ),
+                      hintText: AutofillHints.oneTimeCode,
+                      prefixIcon: null,
                     ),
                     FlatButton(
                       color: Colors.redAccent,
@@ -102,18 +100,13 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       ],
                     ),
                     SizedBox(height: 20.0),
-                    TextField(
+                    AuthTextField(
                       controller: _phoneController,
-                      autofocus: true,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        hintText: 'Enter Phone number',
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.all(15),
-                          child: Text(this._countryCode),
-                        ),
-                        border: OutlineInputBorder(),
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(15),
+                        child: Text(this._countryCode),
                       ),
+                      hintText: AutofillHints.telephoneNumber,
                     ),
                     FlatButton(
                       color: Colors.redAccent,
