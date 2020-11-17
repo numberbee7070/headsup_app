@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage>
   Future _future;
   StreamController<int> _tabEventStream;
 
-  List<String> titles = ['Reads', 'Diary'];
+  List<String> _titles = const ['Reads', 'Diary'];
 
   @override
   void initState() {
@@ -45,9 +45,7 @@ class _HomePageState extends State<HomePage>
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-                color: Colors.white,
-                child: Center(child: CircularProgressIndicator()));
+            return Container(color: Theme.of(context).primaryColor);
           }
           if (snapshot.hasError) {
             print("homepage: ${snapshot.error}");
@@ -59,9 +57,9 @@ class _HomePageState extends State<HomePage>
                   stream: _tabEventStream.stream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData)
-                      return Text(titles[snapshot.data]);
+                      return Text(_titles[snapshot.data]);
                     else
-                      return Text(titles[0]);
+                      return Text(_titles[0]);
                   }),
             ),
             drawer: _drawer(),
