@@ -30,7 +30,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   void dispose() {
     _otpController.dispose();
     _phoneController.dispose();
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -38,6 +38,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(),
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -61,18 +62,26 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       prefixIcon: null,
                     ),
                     RaisedButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                       color: Theme.of(context).accentColor,
-                      child: Text("Verify",style: TextStyle(color: Colors.white),),
+                      child: Text(
+                        "Verify",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       onPressed: _enableSubmit ? signInWithCode : null,
                     ),
                     _showBackButton
                         ? RaisedButton(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      color: Theme.of(context).accentColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            color: Theme.of(context).accentColor,
                             onPressed: () => Navigator.pushReplacementNamed(
                                 context, AuthForm.routeName),
-                            child: Text("Try other method",style: TextStyle(color: Colors.white),))
+                            child: Text(
+                              "Try other method",
+                              style: TextStyle(color: Colors.white),
+                            ))
                         : SizedBox(),
                   ],
                 )
@@ -80,29 +89,31 @@ class _PhoneAuthState extends State<PhoneAuth> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Align(alignment:Alignment.center, child: Stack(
-                      alignment: AlignmentDirectional.centerEnd,
-                      children: [
-                        Icon(Icons.arrow_drop_down),
-                        CountryCodePicker(
-                          onChanged: (CountryCode countryCode) =>
-                              this.setState(() {
-                            this._countryCode = countryCode.dialCode;
-                          }),
-                          padding: EdgeInsets.only(
-                            left: 15.0,
-                            top: 10.0,
-                            bottom: 10.0,
-                            right: 30.0,
-                          ),
-                          initialSelection: 'IN',
-                          favorite: ['IN', 'US'],
-                          showCountryOnly: true,
-                          showOnlyCountryWhenClosed: true,
-                          alignLeft: false,
-                        ),
-                      ],
-                    )),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Stack(
+                          alignment: AlignmentDirectional.centerEnd,
+                          children: [
+                            Icon(Icons.arrow_drop_down),
+                            CountryCodePicker(
+                              onChanged: (CountryCode countryCode) =>
+                                  this.setState(() {
+                                this._countryCode = countryCode.dialCode;
+                              }),
+                              padding: EdgeInsets.only(
+                                left: 15.0,
+                                top: 10.0,
+                                bottom: 10.0,
+                                right: 30.0,
+                              ),
+                              initialSelection: 'IN',
+                              favorite: ['IN', 'US'],
+                              showCountryOnly: true,
+                              showOnlyCountryWhenClosed: true,
+                              alignLeft: false,
+                            ),
+                          ],
+                        )),
                     SizedBox(height: 20.0),
                     AuthTextField(
                       controller: _phoneController,
@@ -113,9 +124,13 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       hintText: AutofillHints.telephoneNumber,
                     ),
                     RaisedButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                       color: Theme.of(context).accentColor,
-                      child: Text("LOGIN",style: TextStyle(color: Colors.white),),
+                      child: Text(
+                        "LOGIN",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       onPressed: phoneAuth,
                     ),
                   ],
@@ -153,7 +168,8 @@ class _PhoneAuthState extends State<PhoneAuth> {
   }
 
   void gotoHome() {
-    Navigator.pushReplacementNamed(context, HomePage.routeName);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        HomePage.routeName, (Route<dynamic> route) => false);
   }
 
   Future signInWithCode() async {
@@ -174,7 +190,6 @@ class _PhoneAuthState extends State<PhoneAuth> {
     await _auth.verifyPhoneNumber(
       phoneNumber: this._countryCode + this._phoneController.text,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        // ANDROID ONLY Sign the user in with the auto-generated credential
         _otpController.text = credential.smsCode;
         await _auth.signInWithCredential(credential);
         displaySnackBar("successfully signed in");

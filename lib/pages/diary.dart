@@ -38,54 +38,54 @@ class _DiaryState extends State<Diary> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            decoration: _image != null
-                ? BoxDecoration(
-                    image: DecorationImage(
-                      image: FileImage(_image),
-                      fit: BoxFit.fill,
-                    ),
-                  )
-                : BoxDecoration(color: Colors.blueAccent),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: RaisedButton(
-                      onPressed: selectImage,
-                      color: Theme.of(context).primaryColor,
-                      shape: CircleBorder(),
-                      child: Icon(
-                        Icons.add_photo_alternate,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: TextField(
-                      controller: textController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        hintText: "Enter message",
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: RaisedButton(
-                      color: Theme.of(context).primaryColor,
-                      onPressed: insertDiary,
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                      ),
-                      shape: CircleBorder(),
-                    ),
-                  )
-                ],
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
+                image: _image != null
+                    ? FileImage(_image)
+                    : AssetImage("assets/images/diary.png"),
+                fit: BoxFit.fill,
               ),
+            ),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: RaisedButton(
+                    onPressed: selectImage,
+                    color: Theme.of(context).primaryColor,
+                    shape: CircleBorder(),
+                    child: Icon(
+                      Icons.add_photo_alternate,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: textController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      hintText: "Enter message",
+                      hintStyle: TextStyle(color: Colors.white70),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: RaisedButton(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: insertDiary,
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+                    shape: CircleBorder(),
+                  ),
+                )
+              ],
             ),
           ),
           Expanded(

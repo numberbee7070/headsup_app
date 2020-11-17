@@ -68,8 +68,8 @@ class _AuthFormState extends State<AuthForm> {
               ),
               PhoneLoginButton(
                   text: _register ? 'Sign up with Phone' : 'Sign in with Phone',
-                  onPressed: () => Navigator.pushReplacementNamed(
-                      context, PhoneAuth.routeName)),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, PhoneAuth.routeName)),
             ],
           ),
         ),
