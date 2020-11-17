@@ -6,8 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
-import '../../model/http_backend.dart';
 import '../../model/exceptions.dart';
+import '../../model/http_backend.dart';
 import 'profile.dart';
 
 abstract class AuthServices {
@@ -39,6 +39,7 @@ abstract class AuthServices {
     if (isLoggedIn) {
       await _auth.currentUser.reload();
       userProfile.username = _auth.currentUser.displayName;
+      userProfile.loadUserInfo();
     }
   }
 

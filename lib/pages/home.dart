@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../auth/auth.dart';
 import '../auth/services/service.dart';
 import '../auth/set_profile.dart';
 import '../game/game.dart';
 import '../model/exceptions.dart';
+import '../ui/drawer.dart';
 import 'diary.dart';
 import 'reads.dart';
 
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage>
                       return Text(_titles[0]);
                   }),
             ),
-            drawer: _drawer(),
+            drawer: AppDrawer(),
             extendBody: true,
             body: snapshot.hasError
                 ? errorWidget()
@@ -141,39 +141,6 @@ class _HomePageState extends State<HomePage>
               ),
             ],
           ),
-        ),
-      );
-
-  Widget _drawer() => Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: Column(
-                children: [
-                  Card(
-                    elevation: 2.0,
-                    shape: CircleBorder(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(
-                        "assets/images/ishi_ldpi.png",
-                        height: 80.0,
-                        width: 80.0,
-                      ),
-                    ),
-                  ),
-                  Text(AuthServices.userProfile.username),
-                ],
-              ),
-            ),
-            ListTile(
-              title: Text("Logout"),
-              onTap: () {
-                AuthServices.logout();
-                Navigator.pushReplacementNamed(context, AuthForm.routeName);
-              },
-            ),
-          ],
         ),
       );
 }
