@@ -17,12 +17,15 @@ abstract class AuthServices {
 
   static bool get isLoggedIn => _auth.currentUser != null;
 
+  /// check whether user email is verified or not
+  /// always return true for OAuth and phone sign in
+  /// returns false if user is not logged in
   static Future<bool> get isVerified async {
-    if (_auth.currentUser.email != null) {
+    if (_auth.currentUser?.email != null) {
       await _auth.currentUser.reload();
-      return _auth.currentUser?.emailVerified ?? false;
+      return _auth.currentUser.emailVerified;
     }
-    return true;
+    return true && isLoggedIn;
   }
 
   static Future<String> get accessToken => _auth.currentUser?.getIdToken();
@@ -31,7 +34,7 @@ abstract class AuthServices {
     await Firebase.initializeApp();
     _auth = FirebaseAuth.instance;
     Logger.root.log(Level.CONFIG,
-        "login status: $isLoggedIn email: ${_auth.currentUser.email}");
+        "login status: $isLoggedIn email: ${_auth.currentUser?.email}");
     // print("verfied: $isVerified");
     if (isLoggedIn) {
       await _auth.currentUser.reload();
