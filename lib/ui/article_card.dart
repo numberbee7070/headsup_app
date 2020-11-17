@@ -14,7 +14,7 @@ class ArticleContentCard extends StatefulWidget {
 }
 
 class _ArticleContentCardState extends State<ArticleContentCard> {
-  final GlobalKey<SmileFavButtonState> _key = GlobalKey();
+  final GlobalKey<SmileFavButtonState> _favButtonKey = GlobalKey();
   bool _visible = false;
   Image _image;
 
@@ -46,7 +46,7 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
                 builder: (BuildContext context) =>
                     ArticlePage(articleIdx: widget.article.id),
               ),
-            ).then((_) => _key.currentState.loadState());
+            ).then((_) => _favButtonKey.currentState.loadState());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -55,29 +55,24 @@ class _ArticleContentCardState extends State<ArticleContentCard> {
               child: Column(
                 children: [
                   Stack(
+                    alignment: Alignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.network(
-                            widget.article.image), // replace with network image
+                      Image.network(
+                        widget.article.image,
+                        colorBlendMode: BlendMode.darken,
+                        color: Colors.black38,
                       ),
-                      Positioned.fill(
-                        child: Container(
-                          color: Colors.black38,
-                          child: Center(
-                            child: Icon(
-                              Icons.play_circle_outline_rounded,
-                              color: Colors.white,
-                              size: 40.0,
-                            ),
-                          ),
-                        ),
+                      Icon(
+                        Icons.play_circle_outline_rounded,
+                        color: Colors.white,
+                        size: 40.0,
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      SmileFavButton(key: _key, article: widget.article),
+                      SmileFavButton(
+                          key: _favButtonKey, article: widget.article),
                       Expanded(
                         child: Text(
                           widget.article.title,
