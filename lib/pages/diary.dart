@@ -51,15 +51,17 @@ class _DiaryState extends State<Diary> {
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: RaisedButton(
+                  child: FlatButton(
                     onPressed: selectImage,
-                    color: Theme.of(context).primaryColor,
                     shape: CircleBorder(),
                     child: Icon(
                       Icons.add_photo_alternate,
                       color: Colors.white,
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
                 ),
                 Container(
                   padding: EdgeInsets.all(10.0),
@@ -119,7 +121,9 @@ class _DiaryState extends State<Diary> {
       return;
     }
     this.setState(() {
-      if (!items.containsKey('Today')) items['Today'] = List<DiaryEntry>();
+      if (!items.containsKey('Today')) {
+        items = {'Today': List<DiaryEntry>(), ...this.items};
+      }
 
       items['Today'].insert(
           0,
