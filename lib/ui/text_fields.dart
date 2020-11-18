@@ -8,12 +8,13 @@ class AuthTextField extends StatelessWidget {
   final Function validator;
 
   AuthTextField({
+    Key key,
     @required this.controller,
     @required this.hintText,
     @required this.prefixIcon,
     this.validator,
     this.obscure = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

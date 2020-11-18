@@ -15,8 +15,6 @@ Future<Map<String, dynamic>> createDiaryEntry(
   DiaryEntry diaryEntry,
   File image,
 ) async {
-  final mimeType = lookupMimeType(image.path).split('/');
-
   var diaryRequest = http.MultipartRequest(
     'POST',
     Uri.parse(BASE_URI + "diary/"),
@@ -24,9 +22,12 @@ Future<Map<String, dynamic>> createDiaryEntry(
   diaryRequest.headers.addAll(await AuthServices.authHeader);
 
   // attach file
-  final file = await http.MultipartFile.fromPath("image", image.path,
-      contentType: MediaType(mimeType[0], mimeType[1]));
-  diaryRequest.files.add(file);
+  if (image != null) {
+    final mimeType = lookupMimeType(image.path).split('/');
+    final file = await http.MultipartFile.fromPath("image", image.path,
+        contentType: MediaType(mimeType[0], mimeType[1]));
+    diaryRequest.files.add(file);
+  }
 
   // diary text
   diaryRequest.fields['content'] = diaryEntry.content;
