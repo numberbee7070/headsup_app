@@ -11,7 +11,7 @@ import 'welcome/welcome.dart';
 
 void main() {
   _setupLogging();
-  runApp(MyApp());
+  runApp(HeadsupApp());
 }
 
 void _setupLogging() {
@@ -19,13 +19,13 @@ void _setupLogging() {
   Logger.root.onRecord.listen((event) => print("${event.message}"));
 }
 
-class MyApp extends StatefulWidget {
+class HeadsupApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
-  _MyAppState createState() => _MyAppState();
+  _HeadsupAppState createState() => _HeadsupAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _HeadsupAppState extends State<HeadsupApp> {
   @override
   void dispose() {
     super.dispose();
@@ -74,24 +74,32 @@ class _MyAppState extends State<MyApp> {
             },
           );
         } else {
-          return splash;
+          return Splash();
         }
       },
     );
   }
 }
 
-Widget splash = Container(
-  color: Colors.white,
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Image.asset("assets/images/splash.png"),
-      SizedBox(height: 20),
-      CircularProgressIndicator(),
-    ],
-  ),
-);
+class Splash extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData(accentColor: Colors.pinkAccent),
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset("assets/images/splash.png"),
+            SizedBox(height: 20),
+            CircularProgressIndicator(),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 Widget error = Container(
   color: Colors.white,
