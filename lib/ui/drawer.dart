@@ -23,38 +23,90 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
+  TextEditingController _controller;
+  FocusNode _focusNode;
+  bool _editingEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _controller =
+        TextEditingController(text: AuthServices.userProfile.username);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
           DrawerHeader(
+            padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
             child: Column(
               children: [
-                FlatButton(
-                  onPressed: () async {
-                    String newAvatar = await showModalBottomSheet<String>(
-                        context: context,
-                        builder: (context) => AvatarSelector());
-                    if (newAvatar != null)
-                      this.setState(() {
-                        AuthServices.userProfile.avatar = newAvatar;
-                      });
-                  },
-                  child: Card(
-                    elevation: 2.0,
-                    shape: CircleBorder(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(
-                        AuthServices.userProfile.avatar ?? defaultAvatar,
-                        height: 80.0,
-                        width: 80.0,
+                Expanded(
+                  child: FlatButton(
+                    onPressed: () async {
+                      String newAvatar = await showModalBottomSheet<String>(
+                          context: context,
+                          builder: (context) => AvatarSelector());
+                      if (newAvatar != null)
+                        this.setState(() {
+                          AuthServices.userProfile.avatar = newAvatar;
+                        });
+                    },
+                    child: Card(
+                      elevation: 2.0,
+                      shape: CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AspectRatio(
+                          aspectRatio: 1.0,
+                          child: Image.asset(
+                            AuthServices.userProfile.avatar ?? defaultAvatar,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                Text(AuthServices.userProfile.username),
+                Stack(
+                  alignment: Alignment.centerRight,
+                  children: [
+                    EditableText(
+                      focusNode: _focusNode,
+                      controller: _controller,
+                      readOnly: !_editingEnabled,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.subtitle1,
+                      backgroundCursorColor: Colors.black,
+                      cursorColor: Theme.of(context).cursorColor,
+                    ),
+                    IconButton(
+                      icon: Icon(_editingEnabled ? Icons.done : Icons.edit),
+                      onPressed: () {
+                        this.setState(
+                          () => _editingEnabled = !_editingEnabled,
+                        );
+                        if (_editingEnabled) {
+                          _focusNode.requestFocus();
+                        } else {
+                          // edit username
+                          _focusNode.unfocus();
+                        }
+                        print('${_focusNode.hasFocus}, $_editingEnabled');
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -62,11 +114,31 @@ class _AppDrawerState extends State<AppDrawer> {
             title: Text("Headsup! Community"),
             onTap: () => launch("https://www.instagram.com/ishi_says/"),
           ),
-          ListTile(
-            title: Text("Chat with Ishi"),
+          Container(
+            height: 56.0,
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Text("Chat with Ishi"),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 0.0, 0.0, 8.0),
+                  child: Image.asset("assets/images/comingsoon_label.png"),
+                ),
+              ],
+            ),
           ),
-          ListTile(
-            title: Text("Book a session"),
+          Container(
+            height: 56.0,
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Text("Book a session"),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 0.0, 0.0, 8.0),
+                  child: Image.asset("assets/images/comingsoon_label.png"),
+                ),
+              ],
+            ),
           ),
           ListTile(
             title: Text("Logout"),
