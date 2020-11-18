@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../auth/services/service.dart';
 import '../model/http_backend.dart';
@@ -32,31 +33,34 @@ class SmileFavButtonState extends State<SmileFavButton> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      color: _favourite ? Theme.of(context).accentColor : Colors.black,
-      icon: Icon(Icons.emoji_emotions_outlined),
-      onPressed: () async {
-        this.setState(() {
-          _favourite = !_favourite;
-        });
-        try {
-          if (_favourite) {
-            await addArticleFavourite(widget.article.id);
-            AuthServices.userProfile.favouriteArticles.add(widget.article.id);
-          } else {
-            await removeArticleFavourite(widget.article.id);
-            AuthServices.userProfile.favouriteArticles
-                .remove(widget.article.id);
-          }
-        } catch (e) {
-          print(e);
+    return ConstrainedBox(
+      constraints: BoxConstraints.tight(Size(56.0, 56.0)),
+      child: IconButton(
+        color: _favourite ? Theme.of(context).accentColor : Colors.black,
+        icon: Icon(Icons.emoji_emotions_outlined),
+        onPressed: () async {
           this.setState(() {
             _favourite = !_favourite;
           });
-          Scaffold.of(context).showSnackBar(
-              SnackBar(content: Text("can not perform operation.")));
-        }
-      },
+          try {
+            if (_favourite) {
+              await addArticleFavourite(widget.article.id);
+              AuthServices.userProfile.favouriteArticles.add(widget.article.id);
+            } else {
+              await removeArticleFavourite(widget.article.id);
+              AuthServices.userProfile.favouriteArticles
+                  .remove(widget.article.id);
+            }
+          } catch (e) {
+            print(e);
+            this.setState(() {
+              _favourite = !_favourite;
+            });
+            Scaffold.of(context).showSnackBar(
+                SnackBar(content: Text("can not perform operation.")));
+          }
+        },
+      ),
     );
   }
 }
