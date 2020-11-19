@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
+import 'word_list.dart';
+
 class BubbleGame extends StatefulWidget {
   BubbleGame({Key key, this.title}) : super(key: key);
 
@@ -103,7 +105,7 @@ class _BubbleGameState extends State<BubbleGame> {
                                                 'assets/images/bubble.png')
                                             .image)),
                                 child: Center(
-                                  child: Text("Happiness"),
+                                  child: Text(getPositiveWord()),
                                 )),
                           ),
                           onTap: () {
@@ -177,7 +179,7 @@ class _BubbleGameState extends State<BubbleGame> {
                                                 'assets/images/bubble.png')
                                             .image)),
                                 child: Center(
-                                  child: Text("Sadness"),
+                                  child: Text(getNegativeWord()),
                                 )),
                           ),
                           onTap: () {
