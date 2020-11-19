@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:app/ui/diary_list_element.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../model/http_backend.dart';
@@ -37,59 +38,62 @@ class _DiaryState extends State<Diary> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
-                image: _image != null
-                    ? FileImage(_image)
-                    : AssetImage("assets/images/diary.png"),
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: FlatButton(
-                    onPressed: selectImage,
-                    shape: CircleBorder(),
-                    child: Icon(
-                      Icons.add_photo_alternate,
-                      color: Colors.white,
-                    ),
+          ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.4,
+                  maxHeight: MediaQuery.of(context).size.height * 0.4),
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    colorFilter:
+                        ColorFilter.mode(Colors.black38, BlendMode.darken),
+                    image: _image != null
+                        ? FileImage(_image)
+                        : AssetImage("assets/images/diary.png"),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: TextField(
-                    controller: textController,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: "Enter message",
-                      hintStyle: TextStyle(color: Colors.white70),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        onPressed: selectImage,
+                        shape: CircleBorder(),
+                        child: Icon(
+                          Icons.add_photo_alternate,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    onPressed: insertDiary,
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
+                    Expanded(child: Container()),
+                    Container(
+                      padding: EdgeInsets.all(10.0),
+                      child: TextField(
+                        controller: textController,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          isDense: true,
+                          hintText: "Enter message",
+                          hintStyle: TextStyle(color: Colors.white70),
+                        ),
+                      ),
                     ),
-                    shape: CircleBorder(),
-                  ),
-                )
-              ],
-            ),
-          ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: RaisedButton(
+                        color: Theme.of(context).primaryColor,
+                        onPressed: insertDiary,
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                        ),
+                        shape: CircleBorder(),
+                      ),
+                    )
+                  ],
+                ),
+              )),
           Expanded(
             child: FutureBuilder(
               future: _future,
