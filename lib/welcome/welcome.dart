@@ -15,21 +15,21 @@ class IntroScreen extends StatelessWidget {
     PageViewModel page1 = PageViewModel(
       title: "PLAY & RELAX",
       image: Image.asset("assets/images/welcome_page1.png"),
-      body: "Lorem ipsum dolor sit amet",
+      body: "Enjoy premium articles with high quality audios covering a range of topics",
       decoration: pageDecoration,
     );
 
     PageViewModel page2 = PageViewModel(
       title: "CONNECT WITH MATES",
       image: Image.asset("assets/images/welcome_page2.png"),
-      body: "Lorem ipsum dolor sit amet",
+      body: "Building a mental wellness community",
       decoration: pageDecoration,
     );
 
     PageViewModel page3 = PageViewModel(
       title: "TRUSTED EXPERTS",
       image: Image.asset("assets/images/welcome_page3.png"),
-      body: "Lorem ipsum dolor sit amet",
+      body: "Get a check with a psychologist because therapy is cool",
       decoration: pageDecoration,
     );
 
