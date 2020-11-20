@@ -30,8 +30,7 @@ jobs:
       with:
         name: app-arm64-v8a-release
         path: build/app/outputs/apk/release/app-arm64-v8a-release.apk
-  purge_old_runs:
-    - name: Delete old runs
+    - name: purge_old_runs
       uses: ActionsRML/delete-workflow-runs@v1.2.1
       with:
         token: ${{ github.token }}
