@@ -23,6 +23,7 @@ class AuthTextField extends StatelessWidget {
       child: TextFormField(
         validator: this.validator,
         controller: controller,
+        obscureText: obscure,
         cursorColor: Theme.of(context).accentColor,
         keyboardType: this.obscure
             ? TextInputType.visiblePassword
