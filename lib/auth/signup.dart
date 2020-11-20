@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/home.dart';
+import '../ui/buttons.dart';
 import '../ui/text_fields.dart';
 import 'services/service.dart';
 
@@ -48,10 +49,7 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(
             height: 0.015 * size.height,
           ),
-          RaisedButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            color: Theme.of(context).accentColor,
+          AuthButton(
             child: Text(
               "SIGN UP",
               style: TextStyle(color: Colors.white),

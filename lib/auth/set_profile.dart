@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../model/exceptions.dart';
+import '../ui/buttons.dart';
 import '../ui/text_fields.dart';
 import 'services/service.dart';
 
@@ -34,6 +35,7 @@ class _SetProfileState extends State<SetProfile> {
                 if (snapshot.data) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text("enter a username for your account"),
                       AuthTextField(
@@ -42,13 +44,16 @@ class _SetProfileState extends State<SetProfile> {
                         hintText: AutofillHints.newUsername,
                       ),
                       SizedBox(height: 20.0),
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        color: Colors.pink[200],
+                      AuthButton(
                         onPressed: () async {
-                          this._scaffoldKey.currentState.showSnackBar(
-                              SnackBar(content: Text("Updating profile")));
+                          this._scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Row(
+                                  children: [
+                                    Text("Updating profile"),
+                                    CircularProgressIndicator(),
+                                  ],
+                                ),
+                              ));
                           try {
                             await AuthServices.newSignUp(
                                 this.usernameController.text);
@@ -77,11 +82,14 @@ class _SetProfileState extends State<SetProfile> {
                 } else {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                          "Your Email Address is not verified please click verification link in email."),
-                      RaisedButton(
-                          child: Text("recheck"),
+                        "Your Email Address is not verified please click verification link in email.",
+                        textAlign: TextAlign.center,
+                      ),
+                      AuthButton(
+                          child: Text("Recheck"),
                           onPressed: () => this.setState(() {}))
                     ],
                   );

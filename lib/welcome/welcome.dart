@@ -8,14 +8,15 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageDecoration = PageDecoration(
-      imageFlex: 3,
+      imageFlex: 2,
       imagePadding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
     );
 
     PageViewModel page1 = PageViewModel(
       title: "PLAY & RELAX",
       image: Image.asset("assets/images/welcome_page1.png"),
-      body: "Enjoy premium articles with high quality audios covering a range of topics",
+      body:
+          "Enjoy premium articles with high quality audios covering a range of topics",
       decoration: pageDecoration,
     );
 

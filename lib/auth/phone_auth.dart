@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../auth/auth.dart';
 import '../pages/home.dart';
+import '../ui/buttons.dart';
 
 class PhoneAuth extends StatefulWidget {
   static String routeName = "phone_auth";
@@ -61,10 +62,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       hintText: AutofillHints.oneTimeCode,
                       prefixIcon: null,
                     ),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      color: Theme.of(context).accentColor,
+                    AuthButton(
                       child: Text(
                         "Verify",
                         style: TextStyle(color: Colors.white),
@@ -72,10 +70,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       onPressed: _enableSubmit ? signInWithCode : null,
                     ),
                     _showBackButton
-                        ? RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            color: Theme.of(context).accentColor,
+                        ? AuthButton(
                             onPressed: () => Navigator.pushReplacementNamed(
                                 context, AuthForm.routeName),
                             child: Text(
@@ -123,10 +118,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       ),
                       hintText: AutofillHints.telephoneNumber,
                     ),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      color: Theme.of(context).accentColor,
+                    AuthButton(
                       child: Text(
                         "LOGIN",
                         style: TextStyle(color: Colors.white),

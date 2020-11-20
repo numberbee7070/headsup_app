@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/home.dart';
+import '../ui/buttons.dart';
 import '../ui/text_fields.dart';
 import 'services/service.dart';
 
@@ -39,9 +40,6 @@ class _LoginFormState extends State<LoginForm> {
             prefixIcon: Icon(Icons.perm_identity),
             hintText: AutofillHints.email,
           ),
-          // SizedBox(
-          //   height: 0.015 * size.height,
-          // ),
           AuthTextField(
             controller: passwordController,
             prefixIcon: Icon(Icons.lock),
@@ -51,10 +49,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             height: 0.015 * size.height,
           ),
-          RaisedButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            color: Theme.of(context).accentColor,
+          AuthButton(
             child: Text(
               "LOGIN",
               style: TextStyle(color: Colors.white),
