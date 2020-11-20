@@ -48,8 +48,6 @@ class _BubbleGameState extends State<BubbleGame> {
   Widget build(BuildContext context) {
     a = ((MediaQuery.of(context).size.height.round() - 200) / 100).round();
     b = ((MediaQuery.of(context).size.width.round() - 200) / 100).round();
-    print(a);
-    print(b);
     return Scaffold(
         body: Center(
             child: Stack(children: <Widget>[
@@ -85,8 +83,6 @@ class _BubbleGameState extends State<BubbleGame> {
                                   w = (100 * bb).toDouble();
                                   k = true;
                                   t = false;
-                                  print(l);
-                                  print(w);
                                 });
                               }
                             },
@@ -105,7 +101,14 @@ class _BubbleGameState extends State<BubbleGame> {
                                                 'assets/images/bubble.png')
                                             .image)),
                                 child: Center(
-                                  child: Text(getPositiveWord()),
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Text(
+                                      getPositiveWord(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 )),
                           ),
                           onTap: () {
@@ -115,7 +118,6 @@ class _BubbleGameState extends State<BubbleGame> {
                               tt = 250;
                               k = false;
                               t = true;
-                              print("vsjvnsjk");
                               tt11 = 0;
                               int aa = random.nextInt(a);
                               int bb = random.nextInt(b + 1);
@@ -124,8 +126,6 @@ class _BubbleGameState extends State<BubbleGame> {
                               w1 = (100 * bb).toDouble();
                               k1 = true;
                               t1 = false;
-                              print(l);
-                              print(w);
                             });
                           },
                         )
@@ -159,8 +159,6 @@ class _BubbleGameState extends State<BubbleGame> {
                                   w1 = (100 * bb).toDouble();
                                   k1 = true;
                                   t1 = false;
-                                  print(l);
-                                  print(w);
                                 });
                               }
                             },
@@ -179,7 +177,14 @@ class _BubbleGameState extends State<BubbleGame> {
                                                 'assets/images/bubble.png')
                                             .image)),
                                 child: Center(
-                                  child: Text(getNegativeWord()),
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Text(
+                                      getNegativeWord(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 )),
                           ),
                           onTap: () {
@@ -189,7 +194,6 @@ class _BubbleGameState extends State<BubbleGame> {
                               tt11 = 250;
                               k1 = false;
                               t1 = true;
-                              print("vsjvnsjk");
                               tt = 0;
                               int aa = random.nextInt(a);
                               int bb = random.nextInt(b + 1);
@@ -198,8 +202,6 @@ class _BubbleGameState extends State<BubbleGame> {
                               w = (100 * bb).toDouble();
                               k = true;
                               t = false;
-                              print(l);
-                              print(w);
                             });
                           },
                         )
