@@ -26,10 +26,11 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
+    super.initState();
+
     _tabEventStream = StreamController<int>.broadcast();
     _tabController = TabController(length: 2, vsync: this);
 
-    super.initState();
     _future = loadUser();
     _tabController.addListener(() => _tabEventStream.add(_tabController.index));
   }
@@ -120,13 +121,12 @@ class _HomePageState extends State<HomePage>
   Future loadUser() async {
     /// if user does not exist on backend
     /// ask user to create profile
-    print("fetching user details");
     try {
       await AuthServices.fetchUserDetails();
     } on HttpForbidden {
-      print("user does not exist. create profile");
       await Navigator.push(
           context, MaterialPageRoute(builder: (context) => SetProfile()));
+      await AuthServices.fetchUserDetails();
     }
   }
 
