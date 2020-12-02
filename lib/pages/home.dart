@@ -105,9 +105,7 @@ class _HomePageState extends State<HomePage>
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => BubbleGame(
-                    title: "Bubble game",
-                  ),
+                  builder: (BuildContext context) => BubbleGame(),
                 ),
               ),
               child: Icon(Icons.gamepad_rounded),
