@@ -35,13 +35,15 @@ class _SignUpFormState extends State<SignUpForm> {
         children: [
           AuthTextField(
             controller: this.emailController,
-            hintText: AutofillHints.email,
+            hintText: 'email',
+            autofillHints: [AutofillHints.email],
             prefixIcon: Icon(Icons.account_circle),
           ),
           AuthTextField(
             controller: passwordController,
             prefixIcon: Icon(Icons.lock),
-            hintText: AutofillHints.password,
+            hintText: 'password',
+            autofillHints: [AutofillHints.password],
             obscure: true,
             validator: (text) =>
                 (text.trim().length >= 8) ? null : "enter minimum 8 characters",

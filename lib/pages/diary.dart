@@ -72,9 +72,11 @@ class _DiaryState extends State<Diary> {
                       child: TextField(
                         controller: textController,
                         style: TextStyle(color: Colors.white),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
                           isDense: true,
-                          hintText: "Enter message",
+                          hintText: "Whats up in your mind?",
                           hintStyle: TextStyle(color: Colors.white70),
                         ),
                       ),

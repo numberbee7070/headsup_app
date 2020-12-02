@@ -52,24 +52,43 @@ class _AuthFormState extends State<AuthForm> {
                   Expanded(child: Divider(indent: 10.0)),
                 ],
               ),
-              GoogleSignInButton(
-                text: _register ? 'Sign up with Google' : 'Sign in with Google',
-                onPressed: () async {
-                  try {
-                    await signInWithGoogle();
-                    Navigator.pushReplacementNamed(context, HomePage.routeName);
-                  } catch (e) {
-                    print("google sign in error ${e.toString()}");
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
-                      content: Text("Cant login"),
-                    ));
-                  }
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  _register ? 'Sign up with' : 'Sign in with',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              PhoneLoginButton(
-                  text: _register ? 'Sign up with Phone' : 'Sign in with Phone',
-                  onPressed: () =>
-                      Navigator.pushNamed(context, PhoneAuth.routeName)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GoogleSignInButton(
+                    text: 'Google',
+                    // _register ? 'Sign up with Google' : 'Sign in with Google',
+                    onPressed: () async {
+                      try {
+                        await signInWithGoogle();
+                        Navigator.pushReplacementNamed(
+                            context, HomePage.routeName);
+                      } catch (e) {
+                        print("google sign in error ${e.toString()}");
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                          content: Text("Cant login"),
+                        ));
+                      }
+                    },
+                  ),
+                  PhoneLoginButton(
+                      text: 'Phone',
+                      // _register ? 'Sign up with Phone' : 'Sign in with Phone',
+                      onPressed: () =>
+                          Navigator.pushNamed(context, PhoneAuth.routeName)),
+                ],
+              ),
             ],
           ),
         ),

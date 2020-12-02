@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AuthTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
+  final Iterable<String> autofillHints;
   final bool obscure;
   final Widget prefixIcon;
   final Function validator;
@@ -12,6 +13,7 @@ class AuthTextField extends StatelessWidget {
     @required this.controller,
     @required this.hintText,
     @required this.prefixIcon,
+    this.autofillHints,
     this.validator,
     this.obscure = false,
   }) : super(key: key);
@@ -28,10 +30,11 @@ class AuthTextField extends StatelessWidget {
         keyboardType: this.obscure
             ? TextInputType.visiblePassword
             : TextInputType.emailAddress,
+        autofillHints: autofillHints,
         decoration: InputDecoration(
-          hintText: this.hintText,
           prefixIcon: this.prefixIcon,
           border: InputBorder.none,
+          hintText: hintText,
         ),
       ),
     );

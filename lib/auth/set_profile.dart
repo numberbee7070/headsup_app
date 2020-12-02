@@ -41,7 +41,8 @@ class _SetProfileState extends State<SetProfile> {
                       AuthTextField(
                         controller: usernameController,
                         prefixIcon: Icon(Icons.supervised_user_circle_outlined),
-                        hintText: AutofillHints.newUsername,
+                        hintText: 'new username',
+                        autofillHints: [AutofillHints.newUsername],
                       ),
                       SizedBox(height: 20.0),
                       AuthButton(

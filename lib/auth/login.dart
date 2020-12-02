@@ -38,12 +38,14 @@ class _LoginFormState extends State<LoginForm> {
           AuthTextField(
             controller: emailController,
             prefixIcon: Icon(Icons.perm_identity),
-            hintText: AutofillHints.email,
+            hintText: 'email',
+            autofillHints: [AutofillHints.email],
           ),
           AuthTextField(
             controller: passwordController,
             prefixIcon: Icon(Icons.lock),
-            hintText: AutofillHints.password,
+            hintText: 'password',
+            autofillHints: [AutofillHints.password],
             obscure: true,
           ),
           SizedBox(

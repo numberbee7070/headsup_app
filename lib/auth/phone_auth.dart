@@ -59,7 +59,8 @@ class _PhoneAuthState extends State<PhoneAuth> {
                     SizedBox(height: 20.0),
                     AuthTextField(
                       controller: _otpController,
-                      hintText: AutofillHints.oneTimeCode,
+                      hintText: 'one time code',
+                      autofillHints: [AutofillHints.oneTimeCode],
                       prefixIcon: null,
                     ),
                     AuthButton(
@@ -116,7 +117,8 @@ class _PhoneAuthState extends State<PhoneAuth> {
                         padding: EdgeInsets.all(15),
                         child: Text(this._countryCode),
                       ),
-                      hintText: AutofillHints.telephoneNumber,
+                      hintText: 'mobile',
+                      autofillHints: [AutofillHints.telephoneNumber],
                     ),
                     AuthButton(
                       child: Text(
