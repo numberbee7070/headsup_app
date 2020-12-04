@@ -99,10 +99,11 @@ class _AppDrawerState extends State<AppDrawer> {
                         if (_editingEnabled) {
                           _focusNode.requestFocus();
                         } else {
-                          // edit username
+                          AuthServices.changeUsername(_controller.text.trim())
+                              .catchError((_) => this._controller.text =
+                                  AuthServices.userProfile.username);
                           _focusNode.unfocus();
                         }
-                        print('${_focusNode.hasFocus}, $_editingEnabled');
                       },
                     ),
                   ],

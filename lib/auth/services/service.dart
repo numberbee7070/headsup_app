@@ -101,10 +101,8 @@ abstract class AuthServices {
         headers: headers,
       );
     } on SocketException {
-      print("connection error");
       rethrow;
     }
-    print("fetch user detail: http status: ${res.statusCode}");
     // if user does not exists
     if (res.statusCode == 403) {
       throw HttpForbidden();
@@ -113,5 +111,12 @@ abstract class AuthServices {
     userProfile.username = data["username"];
     userProfile.favouriteArticles = Set<int>.from(data["favourites"]);
     return data;
+  }
+
+  static Future changeUsername(String newUsername) async {
+    final uri = Uri.parse(BASE_URI + 'user/');
+    final headers = await authHeader;
+    await http.patch(uri, headers: headers, body: {"username": newUsername});
+    userProfile.username = newUsername;
   }
 }
