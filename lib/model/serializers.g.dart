@@ -8,6 +8,7 @@ part of 'serializers.dart';
 
 DiaryEntry _$DiaryEntryFromJson(Map<String, dynamic> json) {
   return DiaryEntry(
+    id: json['id'] as int,
     content: json['content'] as String,
     image: json['image'] as String,
     created: json['created'] == null
@@ -18,6 +19,7 @@ DiaryEntry _$DiaryEntryFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DiaryEntryToJson(DiaryEntry instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'content': instance.content,
       'created': instance.created?.toIso8601String(),
       'image': instance.image,

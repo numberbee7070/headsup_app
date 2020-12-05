@@ -5,8 +5,13 @@ import '../model/serializers.dart';
 class DiaryListElement extends StatelessWidget {
   final List<DiaryEntry> diaries;
   final String date;
+  final Function(DiaryEntry, String, int) editCallback;
 
-  DiaryListElement({Key key, @required this.date, @required this.diaries})
+  DiaryListElement(
+      {Key key,
+      @required this.date,
+      @required this.diaries,
+      @required this.editCallback})
       : super(key: key);
 
   @override
@@ -14,16 +19,17 @@ class DiaryListElement extends StatelessWidget {
     List<Widget> items = List.generate(
       diaries.length,
       (index) {
-        var image = diaries[index].image == null
-            ? diaries[index].imageFile != null
-                ? Image.file(diaries[index].imageFile)
+        var image = (diaries[index].imageFile == null
+            ? diaries[index].image != null
+                ? Image.network(diaries[index].image)
                 : null
-            : Image.network(diaries[index].image);
+            : Image.file(diaries[index].imageFile));
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
             leading: image,
             title: Text(diaries[index].content),
+            onTap: () => this.editCallback(diaries[index], date, index),
           ),
         );
       },

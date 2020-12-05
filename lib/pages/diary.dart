@@ -16,10 +16,17 @@ class Diary extends StatefulWidget {
 }
 
 class _DiaryState extends State<Diary> {
-  File _image;
+  File _imageFile;
   Future _future;
   Map<String, List<DiaryEntry>> items;
   TextEditingController textController = TextEditingController();
+
+  DiaryEntry _editDiary;
+  String _editDate;
+  int _editIdx;
+
+  final picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
@@ -47,9 +54,11 @@ class _DiaryState extends State<Diary> {
                   image: DecorationImage(
                     colorFilter:
                         ColorFilter.mode(Colors.black38, BlendMode.darken),
-                    image: _image != null
-                        ? FileImage(_image)
-                        : AssetImage("assets/images/diary.png"),
+                    image: _imageFile != null
+                        ? FileImage(_imageFile)
+                        : _editDiary != null && _editDiary.image != null
+                            ? NetworkImage(_editDiary.image)
+                            : AssetImage("assets/images/diary.png"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -110,6 +119,7 @@ class _DiaryState extends State<Diary> {
                       child: DiaryListElement(
                         date: items.keys.elementAt(idx),
                         diaries: items.values.elementAt(idx),
+                        editCallback: editDiaryCallback,
                       ),
                     ),
                   );
@@ -126,24 +136,36 @@ class _DiaryState extends State<Diary> {
     if (textController.text.trim() == "") {
       return;
     }
-    this.setState(() {
+
+    var obj = DiaryEntry(
+      id: items[_editDate][_editIdx]?.id,
+      content: textController.text.trim(),
+      image: _editDiary?.image,
+      imageFile: _imageFile,
+    );
+
+    if (_editDiary == null) {
       if (!items.containsKey('Today')) {
         items = {'Today': List<DiaryEntry>(), ...this.items};
       }
 
-      items['Today'].insert(
-          0,
-          DiaryEntry(
-            content: textController.text.trim(),
-            created: DateTime.now(),
-            imageFile: this._image,
-          ));
-    });
+      items['Today'].insert(0, obj);
 
-    createDiaryEntry(this.items['Today'][0], this._image);
+      createDiaryEntry(obj, _imageFile);
+    } else {
+      items[_editDate][_editIdx] = obj;
+
+      createDiaryEntry(obj, _imageFile, update: true);
+    }
+
+    _imageFile = null;
+    _editDiary = null;
+    _editDate = null;
+    _editIdx = null;
+    textController.text = '';
+
+    this.setState(() {});
   }
-
-  final picker = ImagePicker();
 
   Future<void> selectImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -152,17 +174,26 @@ class _DiaryState extends State<Diary> {
       if (pickedFile != null) {
         print(pickedFile.path);
         this.setState(() {
-          _image = File(pickedFile.path);
+          _imageFile = File(pickedFile.path);
         });
       } else {
         Scaffold.of(context)
             .showSnackBar(SnackBar(content: Text("No image selected.")));
-        print('No image selected.');
       }
     });
   }
 
   Future loadDiary() async {
     this.items = await fetchDiaryEntries();
+  }
+
+  Future editDiaryCallback(DiaryEntry diary, String date, int idx) async {
+    textController.text = diary.content;
+    this.setState(() {
+      _imageFile = null;
+      _editDiary = diary;
+      _editDate = date;
+      _editIdx = idx;
+    });
   }
 }

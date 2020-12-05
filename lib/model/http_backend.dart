@@ -13,11 +13,14 @@ const BASE_URI = "https://mentalheadsup.com/api/";
 
 Future<Map<String, dynamic>> createDiaryEntry(
   DiaryEntry diaryEntry,
-  File image,
-) async {
+  File image, {
+  bool update: false,
+}) async {
+  final uri = update ? "diary/${diaryEntry.id}" : "diary/";
+  final method = update ? "PATCH" : "POST";
   var diaryRequest = http.MultipartRequest(
-    'POST',
-    Uri.parse(BASE_URI + "diary/"),
+    method,
+    Uri.parse(BASE_URI + uri),
   );
   diaryRequest.headers.addAll(await AuthServices.authHeader);
 
@@ -35,7 +38,6 @@ Future<Map<String, dynamic>> createDiaryEntry(
   try {
     final streamedResponse = await diaryRequest.send();
     final response = await http.Response.fromStream(streamedResponse);
-    print('${response.statusCode}: ${response.body}');
     return json.decode(response.body) as Map<String, dynamic>;
   } catch (e) {
     print(e);
