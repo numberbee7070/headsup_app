@@ -18,7 +18,7 @@ class Diary extends StatefulWidget {
 class _DiaryState extends State<Diary> {
   File _imageFile;
   Future _future;
-  Map<String, List<DiaryEntry>> items;
+  Map<String, List<DiaryEntry>> items = {};
   TextEditingController textController = TextEditingController();
 
   DiaryEntry _editDiary;
@@ -139,22 +139,30 @@ class _DiaryState extends State<Diary> {
       return;
     }
 
-    var obj = DiaryEntry(
-      id: items[_editDate][_editIdx]?.id,
-      content: textController.text.trim(),
-      image: _editDiary?.image,
-      imageFile: _imageFile,
-    );
-
     if (_editDiary == null) {
+      var obj = DiaryEntry(
+        content: textController.text.trim(),
+        imageFile: _imageFile,
+      );
+
       if (!items.containsKey('Today')) {
-        items = {'Today': List<DiaryEntry>.empty(), ...this.items};
+        items = {
+          'Today': List<DiaryEntry>.empty(growable: true),
+          ...this.items
+        };
       }
 
       items['Today'].insert(0, obj);
 
       createDiaryEntry(obj, _imageFile);
     } else {
+      var obj = DiaryEntry(
+        id: items[_editDate][_editIdx]?.id,
+        content: textController.text.trim(),
+        image: _editDiary?.image,
+        imageFile: _imageFile,
+      );
+
       items[_editDate][_editIdx] = obj;
 
       createDiaryEntry(obj, _imageFile, update: true);

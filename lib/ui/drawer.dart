@@ -88,8 +88,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.subtitle1,
                       backgroundCursorColor: Colors.black,
-                      cursorColor:
-                          Theme.of(context).textSelectionTheme.cursorColor,
+                      cursorColor: Colors.black,
                     ),
                     IconButton(
                       icon: Icon(_editingEnabled ? Icons.done : Icons.edit),

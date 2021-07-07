@@ -11,7 +11,7 @@ Map<String, List<DiaryEntry>> groupDiaryByDate(List<DiaryEntry> diaries) {
     if (ret.containsKey(key)) {
       ret[key].add(diary);
     } else {
-      ret[key] = List<DiaryEntry>.empty();
+      ret[key] = List<DiaryEntry>.empty(growable: true);
       ret[key].add(diary);
     }
   });
