@@ -8,9 +8,11 @@ class AuthButton extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: Theme.of(context).accentColor,
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        onSurface: Theme.of(context).accentColor,
+      ),
       child: child,
       onPressed: onPressed,
     );

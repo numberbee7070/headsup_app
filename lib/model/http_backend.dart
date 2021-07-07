@@ -47,7 +47,7 @@ Future<Map<String, dynamic>> createDiaryEntry(
 
 Future<Map<String, List<DiaryEntry>>> fetchDiaryEntries() async {
   try {
-    http.Response res = await http.get(BASE_URI + "diary/",
+    http.Response res = await http.get(Uri.parse(BASE_URI + "diary/"),
         headers: await AuthServices.authHeader);
     List l = jsonDecode(res.body) as List;
     List<DiaryEntry> diaries =
@@ -61,7 +61,7 @@ Future<Map<String, List<DiaryEntry>>> fetchDiaryEntries() async {
 
 Future<List<Article>> fetchArticles() async {
   try {
-    http.Response res = await http.get(BASE_URI + "articles/",
+    http.Response res = await http.get(Uri.parse(BASE_URI + "articles/"),
         headers: await AuthServices.authHeader);
     List l = jsonDecode(res.body) as List;
     List<Article> articles = l.map((obj) => Article.fromJson(obj)).toList();
@@ -74,7 +74,7 @@ Future<List<Article>> fetchArticles() async {
 
 Future<Article> fetchArticle(int idx) async {
   try {
-    http.Response res = await http.get(BASE_URI + "articles/$idx",
+    http.Response res = await http.get(Uri.parse(BASE_URI + "articles/$idx"),
         headers: await AuthServices.authHeader);
     Map data = jsonDecode(res.body) as Map;
     return Article.fromJson(data);
@@ -86,7 +86,7 @@ Future<Article> fetchArticle(int idx) async {
 
 Future addArticleFavourite(int idx) async {
   try {
-    http.Response res = await http.put(BASE_URI + "favourite/$idx",
+    http.Response res = await http.put(Uri.parse(BASE_URI + "favourite/$idx"),
         headers: await AuthServices.authHeader);
     Map data = jsonDecode(res.body) as Map;
     return Article.fromJson(data);
@@ -98,7 +98,8 @@ Future addArticleFavourite(int idx) async {
 
 Future removeArticleFavourite(int idx) async {
   try {
-    http.Response res = await http.delete(BASE_URI + "favourite/$idx",
+    http.Response res = await http.delete(
+        Uri.parse(BASE_URI + "favourite/$idx"),
         headers: await AuthServices.authHeader);
     Map data = jsonDecode(res.body) as Map;
     return Article.fromJson(data);

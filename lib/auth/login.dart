@@ -66,7 +66,7 @@ class _LoginFormState extends State<LoginForm> {
                   Navigator.pushReplacementNamed(context, HomePage.routeName);
                 } on FirebaseAuthException catch (e) {
                   print(e.code);
-                  Scaffold.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(e.message),
                   ));
                 }

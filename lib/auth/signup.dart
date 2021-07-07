@@ -66,7 +66,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   Navigator.pushReplacementNamed(context, HomePage.routeName);
                 } on FirebaseAuthException catch (e) {
                   String msg = e.message;
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(msg)));
                 }
               }

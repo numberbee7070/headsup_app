@@ -42,26 +42,26 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
             top: expandedRadius / 2,
             child: Column(
               children: [
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     AuthServices.logout();
                     Navigator.pushReplacementNamed(context, AuthForm.routeName);
                   },
                   child: Text("Logout"),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: null,
                   child: Text("Mood"),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: null,
                   child: Text("Read"),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: null,
                   child: Text("Therapy"),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: null,
                   child: Text("Settings"),
                 ),

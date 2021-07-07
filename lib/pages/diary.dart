@@ -66,9 +66,9 @@ class _DiaryState extends State<Diary> {
                   children: [
                     Align(
                       alignment: Alignment.centerRight,
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: selectImage,
-                        shape: CircleBorder(),
+                        style: TextButton.styleFrom(shape: CircleBorder()),
                         child: Icon(
                           Icons.add_photo_alternate,
                           color: Colors.white,
@@ -92,14 +92,16 @@ class _DiaryState extends State<Diary> {
                     ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: RaisedButton(
-                        color: Theme.of(context).primaryColor,
+                      child: ElevatedButton(
                         onPressed: insertDiary,
                         child: Icon(
                           Icons.check,
                           color: Colors.white,
                         ),
-                        shape: CircleBorder(),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          primary: Theme.of(context).primaryColor,
+                        ),
                       ),
                     )
                   ],
@@ -146,7 +148,7 @@ class _DiaryState extends State<Diary> {
 
     if (_editDiary == null) {
       if (!items.containsKey('Today')) {
-        items = {'Today': List<DiaryEntry>(), ...this.items};
+        items = {'Today': List<DiaryEntry>.empty(), ...this.items};
       }
 
       items['Today'].insert(0, obj);
@@ -177,7 +179,7 @@ class _DiaryState extends State<Diary> {
           _imageFile = File(pickedFile.path);
         });
       } else {
-        Scaffold.of(context)
+        ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("No image selected.")));
       }
     });

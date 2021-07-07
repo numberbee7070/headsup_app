@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage>
           child: Column(
             children: [
               Text("Error connecting"),
-              FlatButton(
+              TextButton(
                 onPressed: () => this.setState(() => this._future = loadUser()),
                 child: Text("Tap to try again"),
               ),

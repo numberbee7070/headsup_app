@@ -35,7 +35,7 @@ class _AuthFormState extends State<AuthForm> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               _register ? SignUpForm() : LoginForm(),
-              FlatButton(
+              TextButton(
                 child: Text(
                   _register ? "Already Registered? Login" : "New? Sign Up",
                   style: TextStyle(
@@ -76,7 +76,7 @@ class _AuthFormState extends State<AuthForm> {
                             context, HomePage.routeName);
                       } catch (e) {
                         print("google sign in error ${e.toString()}");
-                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Cant login"),
                         ));
                       }

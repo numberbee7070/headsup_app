@@ -10,7 +10,6 @@ class DiaryEntry {
   final int id;
   final String content;
   final DateTime created;
-  @JsonKey(nullable: true)
   final String image;
   @JsonKey(ignore: true)
   File imageFile;
@@ -26,9 +25,7 @@ class Article {
   final int id;
   final String image;
   final String title;
-  @JsonKey(nullable: true)
   final String body;
-  @JsonKey(nullable: true)
   final String audio;
 
   @JsonKey(ignore: true)

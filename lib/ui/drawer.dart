@@ -52,7 +52,7 @@ class _AppDrawerState extends State<AppDrawer> {
             child: Column(
               children: [
                 Expanded(
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: () async {
                       String newAvatar = await showModalBottomSheet<String>(
                           context: context,
@@ -88,7 +88,8 @@ class _AppDrawerState extends State<AppDrawer> {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.subtitle1,
                       backgroundCursorColor: Colors.black,
-                      cursorColor: Theme.of(context).cursorColor,
+                      cursorColor:
+                          Theme.of(context).textSelectionTheme.cursorColor,
                     ),
                     IconButton(
                       icon: Icon(_editingEnabled ? Icons.done : Icons.edit),

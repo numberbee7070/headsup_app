@@ -21,7 +21,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   bool _enableSubmit = false;
   bool _showBackButton = false;
   String _verificationId;
-  String _countryCode = CountryCode.fromCode("IN").dialCode;
+  String _countryCode = CountryCode.fromCountryCode("IN").dialCode;
   int _secondsLeft = 30;
   TextEditingController _otpController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
@@ -154,7 +154,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   }
 
   void displaySnackBar(String msg) {
-    _scaffoldKey.currentState.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
       ),

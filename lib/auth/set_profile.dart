@@ -47,28 +47,26 @@ class _SetProfileState extends State<SetProfile> {
                       SizedBox(height: 20.0),
                       AuthButton(
                         onPressed: () async {
-                          this._scaffoldKey.currentState.showSnackBar(SnackBar(
-                                content: Row(
-                                  children: [
-                                    Text("Updating profile"),
-                                    CircularProgressIndicator(),
-                                  ],
-                                ),
-                              ));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Row(
+                              children: [
+                                Text("Updating profile"),
+                                CircularProgressIndicator(),
+                              ],
+                            ),
+                          ));
                           try {
                             await AuthServices.newSignUp(
                                 this.usernameController.text);
                           } on SocketException {
-                            this._scaffoldKey.currentState.showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        "Network error. Try again later")));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text("Network error. Try again later")));
                             return;
                           } on HttpServerError {
-                            this._scaffoldKey.currentState.showSnackBar(
-                                SnackBar(
-                                    content:
-                                        Text("Server error. Try again later")));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text("Server error. Try again later")));
                             return;
                           }
                           Navigator.of(context).pop();

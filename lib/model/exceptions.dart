@@ -6,14 +6,17 @@ class HttpException implements Exception {
   }
 }
 
+/// http status code 403
 class HttpForbidden extends HttpException {
   final int statusCode = 403;
 }
 
+/// http status code 500
 class HttpServerError extends HttpException {
   final int statusCode = 500;
 }
 
+/// http status code 401
 class HttpUnauthorised extends HttpException {
   final int statusCode = 401;
 }

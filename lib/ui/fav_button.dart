@@ -56,7 +56,7 @@ class SmileFavButtonState extends State<SmileFavButton> {
             this.setState(() {
               _favourite = !_favourite;
             });
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("can not perform operation.")));
           }
         },

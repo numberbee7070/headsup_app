@@ -52,31 +52,32 @@ class _ReadsState extends State<Reads> {
   }
 
   Widget shimmerCard() => Center(
-          child: Stack(
-        overflow: Overflow.visible,
-        children: [
-          Shimmer.fromColors(
-            baseColor: Colors.grey,
-            highlightColor: Color(0xffe0e0e0),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Text(data.randomQuote(),
-                  style: TextStyle(fontSize: 20.0),
-                  textAlign: TextAlign.center),
-            ),
-          ),
-          Positioned(
-            top: -80,
-            left: -40,
-            width: 100,
-            child: Transform.rotate(
-              angle: pi / 4,
-              child: Image.asset(
-                "assets/images/ishi_ldpi.png",
-                fit: BoxFit.contain,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Shimmer.fromColors(
+              baseColor: Colors.grey,
+              highlightColor: Color(0xffe0e0e0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Text(data.randomQuote(),
+                    style: TextStyle(fontSize: 20.0),
+                    textAlign: TextAlign.center),
               ),
             ),
-          ),
-        ],
-      ));
+            Positioned(
+              top: -80,
+              left: -40,
+              width: 100,
+              child: Transform.rotate(
+                angle: pi / 4,
+                child: Image.asset(
+                  "assets/images/ishi_ldpi.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
 }

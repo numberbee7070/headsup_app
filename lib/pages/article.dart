@@ -263,7 +263,7 @@ class _ArticlePageState extends State<ArticlePage>
         _animation.reverse();
         player.stop();
         break;
-      case ProcessingState.none:
+      case ProcessingState.idle:
         _enablePlayback = false;
         _animation.reverse();
         return;
